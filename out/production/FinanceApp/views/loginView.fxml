@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <right>
+        <AnchorPane prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="emailField" layoutX="50.0" layoutY="139.0" prefHeight="32.0" prefWidth="200.0"
+                       promptText="Username" styleClass="input_field"/>
+            <PasswordField layoutX="50.0" layoutY="182.0" prefHeight="32.0" prefWidth="200.0" promptText="Password"/>
+            <Button fx:id="loginButton" layoutX="112.0" layoutY="231.0" mnemonicParsing="false" prefHeight="32.0"
+                    prefWidth="75.0" text="Login"/>
+            <Text fill="#404040" layoutX="65.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="Don't have an account? Register">
+                <cursor>
+                    <Cursor fx:constant="HAND"/>
+                </cursor>
+            </Text>
+            <Text layoutX="89.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login place">
+                <font>
+                    <Font name="Arial" size="24.0"/>
+                </font>
+            </Text>
+        </AnchorPane>
+    </right>
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #050505;"
+                    stylesheets="@../styles/login.css" BorderPane.alignment="CENTER">
+            <Text fill="WHITE" layoutX="42.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Finance App">
+                <font>
+                    <Font name="Arial Bold" size="36.0"/>
+                </font>
+            </Text>
+            <Text fill="WHITE" layoutX="91.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="Do not be poor">
+                <font>
+                    <Font name="Arial" size="18.0"/>
+                </font>
+            </Text>
+        </AnchorPane>
+    </left>
+</BorderPane>
