@@ -23,12 +23,18 @@ public class loginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginButton.setOnAction(actionEvent -> onLogin());
-
+        Integer count = 0;
     }
 
     private void onLogin() {
-        if(emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")){
-            errorLabel.setText("Login Success");
+
+        if (!(emailField.getText().equals("Admin") )){
+            errorLabel.setText("Account does not exist");}
+        else if (!(passwordField.getText().equals("Admin"))){
+            errorLabel.setText("Password Wrong");
+        }
+         else if  (emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")){
+
 
             // Get the stage from any control (e.g., loginButton)
             Stage stage = (Stage) loginButton.getScene().getWindow();
