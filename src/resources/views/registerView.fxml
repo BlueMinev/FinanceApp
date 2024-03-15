@@ -18,16 +18,16 @@
                     <Font name="Arial" size="24.0"/>
                 </font>
             </Text>
-            <TextField fx:id="emailField2" layoutX="50.0" layoutY="64.0" prefHeight="32.0" prefWidth="200.0"
+            <TextField fx:id="fNameField" layoutX="50.0" layoutY="64.0" prefHeight="32.0" prefWidth="200.0"
                        promptText="First Name" styleClass="input_field" AnchorPane.topAnchor="64.0"/>
-            <TextField fx:id="emailField1" layoutX="51.0" layoutY="105.0" prefHeight="32.0" prefWidth="200.0"
+            <TextField fx:id="lNameField" layoutX="50.0" layoutY="105.0" prefHeight="32.0" prefWidth="200.0"
                        promptText="Last Name" styleClass="input_field"/>
-            <TextField fx:id="emailField3" layoutX="50.0" layoutY="144.0" prefHeight="32.0" prefWidth="200.0"
+            <TextField fx:id="emailField" layoutX="50.0" layoutY="144.0" prefHeight="32.0" prefWidth="200.0"
                        promptText="Email" styleClass="input_field"/>
-            <TextField fx:id="emailField" layoutX="50.0" layoutY="184.0" prefHeight="32.0" prefWidth="200.0"
+            <TextField fx:id="uNameField" layoutX="50.0" layoutY="184.0" prefHeight="32.0" prefWidth="200.0"
                        promptText="Username" styleClass="input_field"/>
-            <PasswordField layoutX="50.0" layoutY="221.0" prefHeight="32.0" prefWidth="200.0" promptText="Password"/>
-            <PasswordField layoutX="50.0" layoutY="262.0" prefHeight="32.0" prefWidth="200.0"
+            <PasswordField fx:id="passwordField1" layoutX="50.0" layoutY="221.0" prefHeight="32.0" prefWidth="200.0" promptText="Password"/>
+            <PasswordField fx:id="passwordField2" layoutX="50.0" layoutY="262.0" prefHeight="32.0" prefWidth="200.0"
                            promptText="Confirm Password"/>
             <Button fx:id="loginButton" layoutX="113.0" layoutY="307.0" mnemonicParsing="false" prefHeight="32.0"
                     prefWidth="75.0" text="Submit"/>

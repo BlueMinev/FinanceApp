@@ -16,11 +16,11 @@
             <TextField fx:id="emailField" layoutX="50.0" layoutY="139.0" prefHeight="32.0" prefWidth="200.0" promptText="Username" styleClass="input_field" />
             <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="182.0" prefHeight="32.0" prefWidth="200.0" promptText="Password" />
             <Button fx:id="loginButton" layoutX="112.0" layoutY="231.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="75.0" text="Login" />
-            <Text fill="#404040" layoutX="65.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account? Register">
+            <Button  fx:id="registerButton"  layoutX="65.0" layoutY="299.0"  text="Don't have an account? Register">
                 <cursor>
                     <Cursor fx:constant="HAND" />
                 </cursor>
-            </Text>
+            </Button>
             <Text layoutX="89.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login place">
                 <font>
                     <Font name="Arial" size="24.0" />
