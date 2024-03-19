@@ -66,6 +66,7 @@ public class registerController implements Initializable{
             // errorLabel.setText("The passwords are not the same");
         }  else {
             // add to database
+
             // Get the stage from any control (e.g., loginButton)
             Stage stage = (Stage) loginButton.getScene().getWindow();
 
