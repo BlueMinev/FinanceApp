@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -19,6 +20,8 @@ public class loginController implements Initializable {
     public Button loginButton;
     public PasswordField passwordField;
     public Label errorLabel;
+    public VBox loginVBox;
+    public VBox registerVBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
