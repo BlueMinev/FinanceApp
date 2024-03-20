@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +35,7 @@ public class registerController implements Initializable{
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-    private void onRegister(){
+    private void onRegister() {
         if (fNameField.getText().equals("")){
             System.out.println("Please put enter Your First Name");
             // errorLabel.setText("Please put enter Your First Name");
@@ -66,6 +67,14 @@ public class registerController implements Initializable{
             // errorLabel.setText("The passwords are not the same");
         }  else {
             // add to database
+            String fName = fNameField.getText();
+            String lName = lNameField.getText();
+            String email = emailField.getText();
+            String uName = uNameField.getText();
+            String password = passwordField1.getText();
+
+            JdbcDao jdbcDao = new JdbcDao();
+            jdbcDao.insertRecord(fName, lName, email, uName, password);
 
             // Get the stage from any control (e.g., loginButton)
             Stage stage = (Stage) loginButton.getScene().getWindow();
