@@ -1,16 +1,15 @@
+package controllers;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.base.SecureRandom;
+
 
 public class Hasher {
 
-    public String getHashedValue(String input) {
-        
+    public String getHashedValue(String input) {  
         try {
-
-            return toHexString(getSHA(input, getSalt()));
+            return toHexString(getSHA(input));
         } catch (NoSuchAlgorithmException e) {
             
             return("exception thrown " + e);
@@ -18,17 +17,17 @@ public class Hasher {
 
     }
 
-    private static byte[] getSHA(String input, byte[] salt) throws NoSuchAlgorithmException {
+    private byte[] getSHA(String input) throws NoSuchAlgorithmException {
         // Static getInstance method is called with hashing SHA
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(salt);
+        MessageDigest md = MessageDigest.getInstance("SHA-256"); 
+        md.update(Salter.getRandomSalt());
         // digest() method called
         // to calculate message digest of an input
         // and return array of byte
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static String toHexString(byte[] hash) {
+    private String toHexString(byte[] hash) {
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
 
@@ -42,11 +41,4 @@ public class Hasher {
 
         return hexString.toString();
     }
-
-   private byte[] getSalt(){
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[16];
-    random.nextBytes(salt);
-    return salt;
-   }
 }
