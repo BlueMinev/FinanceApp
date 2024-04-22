@@ -23,8 +23,8 @@ public record transactionRecord(
      * @param billingType
      * @param date
      */
-    public transactionRecord(double amount, transactionTypes transactionType, billingTypes billingType, LocalDate date)
-    {
+    public transactionRecord(double amount, transactionTypes transactionType, billingTypes billingType,
+            LocalDate date) {
         this(returnAmount(amount, transactionType), transactionType, billingType, date, UUID.randomUUID().toString());
     }
 
