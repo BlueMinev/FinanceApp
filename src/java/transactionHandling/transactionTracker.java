@@ -1,61 +1,11 @@
+package transactionHandling;
+
 import java.util.ArrayList;
 import java.util.UUID;
 import java.time.LocalDate;
 
 
 public class transactionTracker {
-    
-        /**
-         * Enums for types of transaction
-         * and types of billings
-         */
-        public enum transactionTypes {HOME,BILL,GROCERIES,EATOUT,TRANSPORT,ENTERTAINMENT,HEALTH,SHOPPING,GENERAL,INCOME} // all but INCOME imply expense 
-        public enum billingTypes{WEEKLY,BIWEEKLY,MONTHLY, QUARTERLY,ANNUAL,NA}
-
-        /**
-         * Record for each transaction
-         */
-        record transactionRecord (
-                double amount,
-                transactionTypes transactionType,
-                billingTypes billingType,
-                LocalDate date,
-                String transactionID
-                )
-        {
-                
-                /**
-                 * Custom constructor for the record which assigns the correct +ve or -ve value to amount
-                 * ASwell as assigns a random string to each record to act as the transaction ID
-                 * @param amount
-                 * @param transactionType
-                 * @param billingType
-                 * @param date
-                 */
-                public transactionRecord(double amount, transactionTypes transactionType, billingTypes billingType, LocalDate date) {
-                        this(returnAmount(amount, transactionType), transactionType, billingType, date, UUID.randomUUID().toString());
-                }
-
-                /**
-                 * Method which returns either a +ve or -ve value of amount depending on whether it is an expense or an income
-                 * @param amount
-                 * @param transactionType
-                 * @return
-                 */
-                private static double returnAmount(double amount, transactionTypes transactionType){
-                        // if the transaction is an expense the amount is made negative regardless
-                        if (transactionType != transactionTypes.INCOME){
-                                if (amount > 0){
-                                        return amount * -1;
-                                }
-                        }else // and if it's an expense the amount is made negative regardless
-                        {
-                                return Math.abs(amount);
-                        }
-
-                        return amount;
-                }
-        }
 
         /**
          * ArrayList for storing transactionRecord objects
@@ -125,7 +75,7 @@ public class transactionTracker {
          */
         public void removeTransaction(String transactionID){
                 for (transactionRecord transactionRecord : transactions) {
-                        if (transactionRecord.transactionID == transactionID){
+                        if (transactionRecord.transactionID() == transactionID){
                                 transactions.remove(transactionRecord);
                         }
                 }
@@ -177,8 +127,7 @@ public class transactionTracker {
                 return getTotalIn() + getTotalOut();
         }
 
-    // filter with streams
-        //TODO work out how to implement dates correctly so i can filter by dates.
+        // filter with streams
         //TODO create filters that take an input e.g. custom selection of groups
 }
 
