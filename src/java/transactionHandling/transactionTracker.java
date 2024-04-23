@@ -23,6 +23,8 @@ public class transactionTracker {
         }
 
         // kinda just for testing atm lol
+        //@SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         public static void main(String[] args) {
                 transactionTracker expTracker = new transactionTracker();
 
@@ -45,7 +47,13 @@ public class transactionTracker {
                 System.out.println(expTracker.getTotalIn());
                 System.out.println(expTracker.getTotalOut());
 
+     
+                var b = expTracker.filterTransactions(transactionFilters.hasAmountGreaterThan(1000));
+                for (transactionRecord transactionRecord : b) {
+                        System.out.println(transactionRecord);
+                }
         }
+                
 
         /**
          * Adds a transaction to the transactions List
@@ -141,10 +149,11 @@ public class transactionTracker {
          * @param predicates
          * @return List of filtered transactions
          */
-        public List<transactionRecord> filterTransactions(Predicate<transactionRecord>... predicates) {
+        @SuppressWarnings("unchecked")
+        private List<transactionRecord> filterTransactions(Predicate<transactionRecord>... predicates) {
                 Predicate<transactionRecord> combinedPredicate = Stream.of(predicates) // combining the predicate using stream API
                                 .reduce((pred1, pred2) -> pred1.and(pred2)) // and the .reduce() method to combine them
-                                .orElse(student -> true); // if no predicates are probided it defaults to true
+                                .orElse(transaction -> true); // if no predicates are probided it defaults to true
 
                 return transactions.stream() // start the stream on the transactions arraylist
                                 .filter(combinedPredicate) // filter by the combined predicate made using .reduce

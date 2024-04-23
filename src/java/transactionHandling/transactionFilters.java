@@ -5,21 +5,61 @@ import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class transactionFilters {
+
     // predicates for amount
+    /**
+     * 
+     * @param amount
+     * @return  True if the absolute value of the transaction is == amount, else false
+     */
     public static Predicate<transactionRecord> hasAmountEqualTo(double amount) {
-        return transaction -> transaction.amount() == amount;
+        return transaction -> Math.abs(transaction.amount()) == amount;
     }
 
+    /**
+     * 
+     * @param amount
+     * @return True if the absolute value is > amount, else false
+     */
     public static Predicate<transactionRecord> hasAmountGreaterThan(double amount) {
-        return transaction -> transaction.amount() > amount;
+        return transaction -> Math.abs(transaction.amount()) > amount;
     }
 
+    /**
+     * 
+     * @param amount
+     * @return True if the absolute value is < amount, else false
+     */
     public static Predicate<transactionRecord> hasAmountLessThan(double amount) {
-        return transaction -> transaction.amount() < amount;
+        return transaction -> Math.abs(transaction.amount()) < amount;
     }
 
+    /**
+     * 
+     * @param amount
+     * @return True if absolute value >= amount, else false
+     */
+    public static Predicate<transactionRecord> hasAmountGreaterThanEqualTo(double amount) {
+        return transaction -> transaction.amount() >= amount;
+    }
+    
+    /**
+     * 
+     * @param amount
+     * @return True if absolute value <= amount, else false
+     */
+    public static Predicate<transactionRecord> hasAmountLessThanEqualTo(double amount) {
+        return transaction -> transaction.amount() <= amount;
+    }
+
+    /**
+     * 
+     * @param minAmount
+     * @param maxAmount
+     * @return True if the absolute value is >= minAmount and <= maxAmount, else false
+     */
     public static Predicate<transactionRecord> hasAmountBetween(double minAmount, double maxAmount) {
-        return transaction -> transaction.amount() >= minAmount && transaction.amount() <= maxAmount;
+        return transaction -> Math.abs(transaction.amount()) >= minAmount && Math.abs(transaction.amount()) <= maxAmount;
     }
 
     // predicates for transactionType
