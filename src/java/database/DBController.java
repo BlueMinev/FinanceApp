@@ -6,16 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBController {
-    public static void main(String[] args) {
-
-        DBController dbController = new DBController();
-
-        dbController.addAccount("Maja", "Solheim", "Maja@hotmail.com", "MaSol", "lols");
-        //dbController.removeAccount("Maja@hotmail.com");
-        System.out.println(dbController.doesAccountExist("Maja@hotmail.com"));
-        dbController.readTable("tAccount");
-    }
-
     private void readTable(String tableName) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
