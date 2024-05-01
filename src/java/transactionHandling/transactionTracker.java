@@ -43,13 +43,35 @@ public class transactionTracker {
                                 billingTypes.MONTHLY,
                                 "2014-05-05");
 
+                expTracker.addTransaction(40,
+                                transactionTypes.GROCERIES,
+                                billingTypes.NA,
+                                "2014-05-05");
+
+                expTracker.addTransaction(60,
+                                transactionTypes.GROCERIES,
+                                billingTypes.NA,
+                                "2014-06-05");
+
                 System.out.println(expTracker.getBalance());
                 System.out.println(expTracker.getTotalIn());
                 System.out.println(expTracker.getTotalOut());
 
-     
+                // filters by amount greater than 100
                 var b = expTracker.filterTransactions(transactionFilters.hasAmountGreaterThan(1000));
                 for (transactionRecord transactionRecord : b) {
+                        System.out.println(transactionRecord);
+                }
+
+                //filter by if expense was on groceries
+                var c = expTracker.filterTransactions(transactionFilters.hasTransactionType(transactionTypes.GROCERIES));
+                for (transactionRecord transactionRecord : c) {
+                        System.out.println(transactionRecord);
+                }
+                
+                //filter by groceries over 50
+                var d = expTracker.filterTransactions(transactionFilters.hasTransactionType(transactionTypes.GROCERIES), transactionFilters.hasAmountGreaterThan(50));
+                for (transactionRecord transactionRecord : d) {
                         System.out.println(transactionRecord);
                 }
         }
@@ -145,12 +167,16 @@ public class transactionTracker {
 
         
         /**
-         * 
+         * To use this you call filterTransactions(), and for parameters use the transactionFilters class to get predicates (filters)
+         * You can put as many predicates as you want as parameters, it will combine them.
+         * For example if you want to get all transactions on GROCERIES over £100:
+         * filterTransactions(transactionFilters.hasTransactionType(transactionTypes.GROCERIES), transactionFilters.hasAmountGreaterThan(100));
+         *  
          * @param predicates
          * @return List of filtered transactions
          */
         @SuppressWarnings("unchecked")
-        private List<transactionRecord> filterTransactions(Predicate<transactionRecord>... predicates) {
+        public List<transactionRecord> filterTransactions(Predicate<transactionRecord>... predicates) {
                 Predicate<transactionRecord> combinedPredicate = Stream.of(predicates) // combining the predicate using stream API
                                 .reduce((pred1, pred2) -> pred1.and(pred2)) // and the .reduce() method to combine them
                                 .orElse(transaction -> true); // if no predicates are probided it defaults to true
