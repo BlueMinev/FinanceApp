@@ -67,6 +67,10 @@ public class transactionFilters {
         return transaction -> transaction.transactionType() == transactionType;
     }
 
+    public static Predicate<transactionRecord> doesNotHaveTransactionType(transactionTypes transactionType) {
+        return transaction -> transaction.transactionType() != transactionType;
+    }
+
     // predicate for billingType
     public static Predicate<transactionRecord> hasBillingType(billingTypes billingType) {
         return transaction -> transaction.billingType() == billingType;

@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class transactionTracker {
 
@@ -28,54 +29,42 @@ public class transactionTracker {
         public static void main(String[] args) {
                 transactionTracker expTracker = new transactionTracker();
 
-                expTracker.addTransaction(1000,
-                                transactionTypes.BILL,
-                                billingTypes.MONTHLY,
-                                "2014-04-27");
-
-                expTracker.addTransaction(500.00,
-                                transactionTypes.BILL,
-                                billingTypes.MONTHLY,
-                                "2014-05-15");
-
-                expTracker.addTransaction(2500,
-                                transactionTypes.INCOME,
-                                billingTypes.MONTHLY,
-                                "2014-05-05");
-
-                expTracker.addTransaction(40,
-                                transactionTypes.GROCERIES,
-                                billingTypes.NA,
-                                "2014-05-05");
-
-                expTracker.addTransaction(60,
-                                transactionTypes.GROCERIES,
-                                billingTypes.NA,
-                                "2014-06-05");
-
-                System.out.println(expTracker.getBalance());
-                System.out.println(expTracker.getTotalIn());
-                System.out.println(expTracker.getTotalOut());
-
-                // filters by amount greater than 100
-                var b = expTracker.filterTransactions(transactionFilters.hasAmountGreaterThan(1000));
-                for (transactionRecord transactionRecord : b) {
-                        System.out.println(transactionRecord);
-                }
-
-                //filter by if expense was on groceries
-                var c = expTracker.filterTransactions(transactionFilters.hasTransactionType(transactionTypes.GROCERIES));
-                for (transactionRecord transactionRecord : c) {
-                        System.out.println(transactionRecord);
-                }
                 
-                //filter by groceries over 50
-                var d = expTracker.filterTransactions(transactionFilters.hasTransactionType(transactionTypes.GROCERIES), transactionFilters.hasAmountGreaterThan(50));
-                for (transactionRecord transactionRecord : d) {
-                        System.out.println(transactionRecord);
-                }
         }
-                
+        
+        /**
+         * Populates the given transaction tracker with dummy transactions.
+         *
+         * @param  expTracker  the transaction tracker to populate
+         */
+        public static void dummyPopulate(transactionTracker expTracker){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+            expTracker.addTransaction(1000,
+                    transactionTypes.BILL,
+                    billingTypes.MONTHLY,
+                    LocalDate.parse("27-04-2024", formatter));
+        
+            expTracker.addTransaction(500.00,
+                    transactionTypes.BILL,
+                    billingTypes.MONTHLY,
+                    LocalDate.parse("01-05-2024", formatter));
+        
+            expTracker.addTransaction(2500,
+                    transactionTypes.INCOME,
+                    billingTypes.MONTHLY,
+                    LocalDate.parse("05-05-2023", formatter));
+        
+            expTracker.addTransaction(40,
+                    transactionTypes.GROCERIES,
+                    billingTypes.NA,
+                    LocalDate.parse("05-11-2023", formatter));
+        
+            expTracker.addTransaction(60,
+                    transactionTypes.GROCERIES,
+                    billingTypes.NA,
+                    LocalDate.parse("02-01-2024", formatter));
+        }
 
         /**
          * Adds a transaction to the transactions List
@@ -87,8 +76,8 @@ public class transactionTracker {
          * @param date
          */
         public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
-                        String date) {
-                transactions.add(new transactionRecord(amount, transactionType, billingType, LocalDate.parse(date)));
+                        LocalDate date) {
+                transactions.add(new transactionRecord(amount, transactionType, billingType, date));
         }
 
         /**
@@ -185,4 +174,24 @@ public class transactionTracker {
                                 .filter(combinedPredicate) // filter by the combined predicate made using .reduce
                                 .collect(Collectors.toList()); // collect the filtered transactions to a list and return it
         }
+
+        /**
+         * slightly different version which can take any list of transactionRecords
+         * doesn't use the instance List transaction therefore is static
+         * @param listToFilter
+         * @param predicates
+         * @return filtered list
+         */
+        @SuppressWarnings("unchecked")
+        public static List<transactionRecord> filterTransactions(List<transactionRecord> listToFilter, Predicate<transactionRecord>... predicates) {
+                Predicate<transactionRecord> combinedPredicate = Stream.of(predicates) // combining the predicate using stream API
+                                .reduce((pred1, pred2) -> pred1.and(pred2)) // and the .reduce() method to combine them
+                                .orElse(transaction -> true); // if no predicates are probided it defaults to true
+
+                return listToFilter.stream() // start the stream on the transactions arraylist
+                                .filter(combinedPredicate) // filter by the combined predicate made using .reduce
+                                .collect(Collectors.toList()); // collect the filtered transactions to a list and return it
+        }
+
+        //TODO connect to database so it can actually read transactions
 }
