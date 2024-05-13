@@ -34,8 +34,11 @@ public class registerController implements Initializable{
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+
     }
-    private void onRegister() {
+
+    private void onRegister(){
+
         if (fNameField.getText().equals("")){
             System.out.println("Please put enter Your First Name");
             // errorLabel.setText("Please put enter Your First Name");
