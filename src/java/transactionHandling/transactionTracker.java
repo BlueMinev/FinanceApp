@@ -47,6 +47,8 @@ public class transactionTracker {
 
                 System.out.println(expTracker.getBalance());
 
+                expTracker.addTransactionToDB(8, 400, "2024-05-16", "McDonalds", "Too many bigmacs", "EATOUT", "NA");
+
                 
         }
         
@@ -72,6 +74,11 @@ public class transactionTracker {
                 }
 
                 
+       }
+
+       public void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
+               dbController.addPayment(accountNum, amount, date, place, purchase, transactionType, billingType);
+
        }
 
         /**

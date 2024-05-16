@@ -230,14 +230,14 @@ public class DBController {
      * @param transaction_type The type of transaction (e.g., GROCERIES, UTILITIES).
      * @param billing_type The billing type (e.g., NA, RECURRING).
      */
-    private void addPayment(int accountNumber, double amount, String date, String place, String purchase, String transaction_type, String billing_type) {
+    public void addPayment(int accountNumber, double amount, String date, String place, String purchase, String transaction_type, String billing_type) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
         // Request a connection to the database
         Connection connection = controller.getConnection();
 
         // Prepare the SQL INSERT statement
-        String insertQuery = "INSERT INTO tPayment (accountNumber, amount, date, place, purchase, transaction_type, billing_type)" +
+        String insertQuery = "INSERT INTO tPayment (accountID, amount, date, place, purchase, transaction_type, billing_type)" +
                 " VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
         // Convert String date to java.sql.Date
