@@ -22,9 +22,14 @@ public class DBController {
      */
     public static void main(String[] args) throws SQLException {
         DBController dbController = new DBController();
+        System.out.println(dbController.selectAccounts(1));
+        dbController.executeSQL("INSERT INTO tUser (fName, lName, email, uName, password)" +
+                " VALUES ('Daisy', 'Jones', 'DJon@gmail.com', 'Daisy', 'the6Rule')");
+
+
 //        dbController.addUser("Sophie", "Gellar", "Soph@gmail.com", "SuperSophie", "haha");
 //        dbController.removeUser("Maja@hotmail.com");
-        List<Map<String, Object>> tableData = dbController.readTable("tPayment");
+        List<Map<String, Object>> tableData = dbController.readTable("tUser");
         System.out.println(tableData);
 //        dbController.addPayment(4, 20.00, "2024-05-07", "ALDI", "Todays dinner", "GROCERIES", "NA");
 //        dbController.addAccount(12345678, "Savings", 1, 1000.0, "savings account");
@@ -330,4 +335,102 @@ public class DBController {
         }
     }
 
+
+    /**
+     * Retrieves all account records for a given user ID from the tAccount table.
+     *
+     * @param userid The ID of the user whose accounts are to be retrieved.
+     * @return A list of maps, where each map represents a row in the result set, with column names as keys and column values as values.
+     * @throws SQLException If a database access error occurs or the SQL statement is invalid.
+     */
+    public List<Map<String, Object>> selectAccounts(int userid) throws SQLException {
+        DBConnection controller = DBConnection.getInstance();
+        Connection connection = controller.getConnection();
+        String query = "SELECT * FROM tAccount WHERE ownerid = " + userid;
+        List<Map<String, Object>> tableData = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Getting metadata to dynamically read column names
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Processing each row of the database table
+            while (resultSet.next()) {
+                Map<String, Object> row = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.put(metaData.getColumnName(i), resultSet.getObject(i));
+                }
+                tableData.add(row);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e; // rethrow the exception after logging it
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw e; // rethrow the exception after logging it
+            }
+        }
+
+        return tableData;
+    }
+
+
+    /**
+     * Executes the provided SQL query and returns the result set as a list of maps.
+     * Each map represents a row in the result set, with column names as keys and column values as values.
+     * The method can handle SELECT statements that return results.
+     *
+     * @param sql The SQL statement to be executed.
+     * @return A list of maps, where each map represents a row in the result set, with column names as keys and column values as values.
+     * @throws SQLException If a database access error occurs or the SQL statement is invalid.
+     */
+    public List<Map<String, Object>> executeSQL(String sql) throws SQLException {
+        DBConnection controller = DBConnection.getInstance();
+        Connection connection = controller.getConnection();
+        List<Map<String, Object>> tableData = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            if (statement.execute()) { // True if the first result is a ResultSet object
+                ResultSet resultSet = statement.getResultSet();
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                // Processing each row of the database table
+                while (resultSet.next()) {
+                    Map<String, Object> row = new HashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        row.put(metaData.getColumnName(i), resultSet.getObject(i));
+                    }
+                    tableData.add(row);
+                }
+
+                resultSet.close();
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e; // rethrow the exception after logging it
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw e; // rethrow the exception after logging it
+            }
+        }
+
+        return tableData;
+    }
 }
