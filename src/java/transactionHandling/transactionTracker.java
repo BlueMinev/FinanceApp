@@ -1,10 +1,18 @@
 package transactionHandling;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.sqlite.util.LibraryLoaderUtil;
+
+import controllers.dashboardController;
+import database.DBController;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -15,56 +23,50 @@ public class transactionTracker {
          */
         private ArrayList<transactionRecord> transactions;
 
+        private DBController dbController;
+
         /**
          * Constructor for the transactionTracker class
          * instantiates transactions as an arraylist
          */
         public transactionTracker() {
                 transactions = new ArrayList<>();
+                dbController = new DBController();
+
+                this.readPaymentTable();
         }
 
         // kinda just for testing atm lol
         //@SuppressWarnings("unchecked")
         @SuppressWarnings("unchecked")
         public static void main(String[] args) {
+
                 transactionTracker expTracker = new transactionTracker();
+
+                System.out.println(expTracker.getBalance());
 
                 
         }
         
-        /**
-         * Populates the given transaction tracker with dummy transactions.
-         *
-         * @param  expTracker  the transaction tracker to populate
-         */
-        public static void dummyPopulate(transactionTracker expTracker){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-            expTracker.addTransaction(1000,
-                    transactionTypes.BILL,
-                    billingTypes.MONTHLY,
-                    LocalDate.parse("27-04-2024", formatter));
-        
-            expTracker.addTransaction(500.00,
-                    transactionTypes.BILL,
-                    billingTypes.MONTHLY,
-                    LocalDate.parse("01-05-2024", formatter));
-        
-            expTracker.addTransaction(2500,
-                    transactionTypes.INCOME,
-                    billingTypes.MONTHLY,
-                    LocalDate.parse("05-05-2023", formatter));
-        
-            expTracker.addTransaction(40,
-                    transactionTypes.GROCERIES,
-                    billingTypes.NA,
-                    LocalDate.parse("05-11-2023", formatter));
-        
-            expTracker.addTransaction(60,
-                    transactionTypes.GROCERIES,
-                    billingTypes.NA,
-                    LocalDate.parse("02-01-2024", formatter));
-        }
+       private void readPaymentTable(){
+                try{
+                        List<Map<String, Object>> trnsctns = dbController.readTable("tPayment");
+
+                        for(Map<String, Object> trnsctn : trnsctns){
+                                this.addTransaction((double) trnsctn.get("amount"), 
+                                        (transactionTypes) trnsctn.get("transactionType"), // how is date stored as a long in the DB???
+                                        (billingTypes) trnsctn.get("billingType"), 
+                                        LocalDate.parse(trnsctn.get("date").toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+                        }
+                       
+
+                }catch (SQLException e)
+                {
+                        e.printStackTrace();
+                }
+
+                
+       }
 
         /**
          * Adds a transaction to the transactions List

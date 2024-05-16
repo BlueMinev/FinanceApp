@@ -8,9 +8,7 @@ public class DBConnection {
 
     private static DBConnection instance;
 
-    private DBConnection() {
 
-    }
 
     public Connection getConnection() {
         try {

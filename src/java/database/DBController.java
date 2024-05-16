@@ -38,7 +38,11 @@ public class DBController {
      */
     public List<Map<String, Object>> readTable(String tableName) throws SQLException {
         DBConnection controller = DBConnection.getInstance();
+
+
         Connection connection = controller.getConnection();
+
+
         String query = "SELECT * FROM " + tableName;
         List<Map<String, Object>> tableData = new ArrayList<>();
 
