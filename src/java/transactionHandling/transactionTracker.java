@@ -83,7 +83,7 @@ public class transactionTracker {
          * @param billingType
          * @param date
          */
-        public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
+        private void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
                         LocalDate date, String transactionID, String description, String place) {
                 transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
         }
@@ -94,7 +94,7 @@ public class transactionTracker {
          * 
          * @param transactionRecord
          */
-        public void addTransaction(transactionRecord transactionRecord) {
+        private void addTransaction(transactionRecord transactionRecord) {
                 transactions.add(transactionRecord);
         }
 
