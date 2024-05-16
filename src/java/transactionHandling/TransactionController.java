@@ -50,12 +50,12 @@ public class TransactionController {
 
     @FXML
     private void handleAddTransaction() {
-        double amount = Double.parseDouble(transactionTableView.getEditingCell().getText());
+        double amount = Double.parseDouble(transactionTableView.getEditingCell().getTableColumn().getCellData(transactionTableView.getEditingCell().getRow()).toString());
         transactionTypes type = transactionTypeComboBox.getValue();
         billingTypes billing = billingTypeComboBox.getValue();
         LocalDate date = datePicker.getValue();
 
-        transactionRecord newRecord = new transactionRecord(amount, type, billing, date);
+        transactionRecord newRecord = new transactionRecord(amount, type, billing, date, null, null, null);
         tracker.addTransaction(newRecord);
         transactions.add(newRecord);
     }

@@ -14,7 +14,13 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import database.DBController;
+
 
 public class loginController implements Initializable {
 
@@ -62,14 +68,15 @@ public class loginController implements Initializable {
     }
 
     private void onLogin() {
-
+         
         if (!(emailField.getText().equals("Admin") )){
             errorLabel.setText("Account does not exist");}
         else if (!(passwordField.getText().equals("Admin"))){
             errorLabel.setText("Password Wrong");
         }
-         else if  (emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")){
+         else if  ((emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")) || checkUnamePword(emailField.getText(), passwordField.getText()) == true){
 
+            GlobalVariables.email = emailField.getText();
 
             // Get the stage from any control (e.g., loginButton)
             Stage stage = (Stage) loginButton.getScene().getWindow();
@@ -99,6 +106,31 @@ public class loginController implements Initializable {
 
         } else {
             errorLabel.setText("Login Failed");
+        }
+
+        
+    }
+
+    private boolean checkUnamePword(String email, String pWord) {
+        DBController dbController = new DBController();
+        Map<String, String> unamesAndPwords = new HashMap<String, String>();
+
+        try {
+        List<Map<String,Object>> accounts = dbController.readTable("tUser");
+
+        for(Map<String, Object> account : accounts) {
+            unamesAndPwords.put(account.get("email").toString(), account.get("password").toString());
+        }
+
+        if (unamesAndPwords.containsKey(email) && unamesAndPwords.get(email) == pWord){
+            return true;
+        } else {
+            return false;
+        }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

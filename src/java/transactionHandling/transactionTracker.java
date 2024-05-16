@@ -47,6 +47,7 @@ public class transactionTracker {
 
                 System.out.println(expTracker.getBalance());
 
+                
                 expTracker.addTransactionToDB(8, 400, "2024-05-16", "McDonalds", "Too many bigmacs", "EATOUT", "NA");
 
                 
@@ -76,7 +77,13 @@ public class transactionTracker {
                 
        }
 
-       public void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
+       public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
+                        LocalDate date, String transactionID, String description, String place){
+                this.addTransaction(amount, transactionType, billingType, date, transactionID, description, place); 
+                this.addTransactionToDB(null, amount, place, place, description, transactionID, place);               
+       }
+
+       private void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
                dbController.addPayment(accountNum, amount, date, place, purchase, transactionType, billingType);
 
        }
@@ -90,7 +97,7 @@ public class transactionTracker {
          * @param billingType
          * @param date
          */
-        private void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
+        private void addTransactionToList(double amount, transactionTypes transactionType, billingTypes billingType,
                         LocalDate date, String transactionID, String description, String place) {
                 transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
         }
