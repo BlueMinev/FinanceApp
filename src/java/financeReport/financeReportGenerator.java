@@ -14,12 +14,6 @@ public class financeReportGenerator {
 
     public static void main(String[] args){
         transactionTracker txTrckr = new transactionTracker();
-        transactionTracker.dummyPopulate(txTrckr);
-        financeReportGenerator frg = new financeReportGenerator(txTrckr);
-        
-        for (transactionRecord txnRcd : frg.getExpenses(12)) {
-            System.out.println(txnRcd);
-        }
     }
 
     /**
@@ -54,7 +48,7 @@ public class financeReportGenerator {
      * @return Map of transactionType to List<transactionRecord>
      */
     @SuppressWarnings("unchecked") // i swear this doenst break anything :)
-    private Map<transactionTypes, List<transactionRecord>> expenseBreakdown(int timeframeInMonths){
+    public Map<transactionTypes, List<transactionRecord>> expenseBreakdown(int timeframeInMonths){
         List<transactionRecord> expenses = txnTracker.filterTransactions(
             transactionFilters.doesNotHaveTransactionType(transactionTypes.INCOME), 
             transactionFilters.hasDateAfter(LocalDate.now().minusMonths(timeframeInMonths)));
@@ -101,7 +95,7 @@ public class financeReportGenerator {
 
 
     /**
-     * Sets the transaction tracker to null, effectively deleting customer information.
+     * Sets the transaction tracker to null
      *
      * @param  None  This function does not take any parameters.
      * @return void  This function does not return any value.

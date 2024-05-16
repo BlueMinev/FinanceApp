@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,9 +43,9 @@ public class TransactionController {
         transactionTableView.setItems(transactions);
 
         // Bind the total fields to the transactionTracker values
-        totalIncomeField.textProperty().bind(tracker.getTotalInAsString());
-        totalExpensesField.textProperty().bind(tracker.getTotalOutAsString());
-        balanceField.textProperty().bind(tracker.getBalanceAsString());
+        totalIncomeField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getTotalIn())));
+        totalExpensesField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getTotalOut())));
+        balanceField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getBalance())));
     }
 
     @FXML
@@ -84,7 +85,7 @@ public class TransactionController {
         List<transactionRecord> filteredTransactions = tracker.filterTransactions(
                 filters.hasTransactionType(transactionTypeComboBox.getValue()),
                 filters.hasBillingType(billingTypeComboBox.getValue()),
-                filters.hasDate(datePicker.getValue())
+                filters.hasDateEqualTo(datePicker.getValue())
         );
         transactions.setAll(filteredTransactions);
     }

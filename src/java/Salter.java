@@ -1,4 +1,3 @@
-package controllers;
 import java.security.SecureRandom;
 
 public class Salter {
