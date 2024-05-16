@@ -104,7 +104,7 @@ public class transactionTracker {
          * 
          * @param transactionID
          */
-        public void removeTransaction(String transactionID) {
+        private void removeTransaction(String transactionID) {
                 for (transactionRecord transactionRecord : transactions) {
                         if (transactionRecord.transactionID() == transactionID) {
                                 transactions.remove(transactionRecord);
@@ -117,7 +117,7 @@ public class transactionTracker {
          * 
          * @param transactionRecord
          */
-        public void removeTransaction(transactionRecord transactionRecord) {
+        private void removeTransaction(transactionRecord transactionRecord) {
                 transactions.remove(transactionRecord);
         }
 
@@ -201,5 +201,4 @@ public class transactionTracker {
                                 .collect(Collectors.toList()); // collect the filtered transactions to a list and return it
         }
 
-        //TODO connect to database so it can actually read transactions
 }
