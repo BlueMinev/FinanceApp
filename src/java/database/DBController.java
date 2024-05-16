@@ -24,7 +24,7 @@ public class DBController {
         DBController dbController = new DBController();
 //        dbController.addUser("Sophie", "Gellar", "Soph@gmail.com", "SuperSophie", "haha");
 //        dbController.removeUser("Maja@hotmail.com");
-        List<Map<String, Object>> tableData = dbController.readTable("tUser");
+        List<Map<String, Object>> tableData = dbController.readTable("tPayment");
         System.out.println(tableData);
 //        dbController.addPayment(4, 20.00, "2024-05-07", "ALDI", "Todays dinner", "GROCERIES", "NA");
 //        dbController.addAccount(12345678, "Savings", 1, 1000.0, "savings account");
@@ -222,7 +222,7 @@ public class DBController {
 
     /**
      * Adds a payment transaction to the database.
-     * @param accountID The account ID associated with the payment.
+     * @param accountNumber The accountNumber associated with the payment.
      * @param amount The amount of the payment.
      * @param date The date of the transaction in the format "YYYY-MM-DD".
      * @param place The location where the transaction occurred.
@@ -230,14 +230,14 @@ public class DBController {
      * @param transaction_type The type of transaction (e.g., GROCERIES, UTILITIES).
      * @param billing_type The billing type (e.g., NA, RECURRING).
      */
-    private void addPayment(int accountID, double amount, String date, String place, String purchase, String transaction_type, String billing_type) {
+    private void addPayment(int accountNumber, double amount, String date, String place, String purchase, String transaction_type, String billing_type) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
         // Request a connection to the database
         Connection connection = controller.getConnection();
 
         // Prepare the SQL INSERT statement
-        String insertQuery = "INSERT INTO tPayment (accountID, amount, date, place, purchase, transaction_type, billing_type)" +
+        String insertQuery = "INSERT INTO tPayment (accountNumber, amount, date, place, purchase, transaction_type, billing_type)" +
                 " VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
         // Convert String date to java.sql.Date
@@ -248,7 +248,7 @@ public class DBController {
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 
             // Set parameter values for the insert statement
-            preparedStatement.setInt(1, accountID);
+            preparedStatement.setInt(1, accountNumber);
             preparedStatement.setDouble(2, amount);
             preparedStatement.setDate(3, sqlDate);
             preparedStatement.setString(4, place);

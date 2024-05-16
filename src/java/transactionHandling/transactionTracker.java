@@ -56,14 +56,15 @@ public class transactionTracker {
 
                         for(Map<String, Object> trnsctn : trnsctns){
                                 this.addTransaction((double) trnsctn.get("amount"), 
-                                        (transactionTypes) trnsctn.get("transactionType"), // how is date stored as a long in the DB???
-                                        (billingTypes) trnsctn.get("billingType"), 
+                                        transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // how is date stored as a long in the DB???
+                                        billingTypes.valueOf((String)trnsctn.get("billing_type")), 
                                         LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")),
-                                        (String) trnsctn.get("transactionID"),
-                                        (String) trnsctn.get("description"),
+                                        (String) trnsctn.get("paymentID").toString(),
+                                        (String) trnsctn.get("purchase"),
                                         (String) trnsctn.get("place"));
                         }
                        
+                        //transactions = this.filterTransactions(transactionFilters.hasTransactionID(/*find a way to get a global accountID when logging in */));
 
                 }catch (SQLException e)
                 {
@@ -82,7 +83,7 @@ public class transactionTracker {
          * @param billingType
          * @param date
          */
-        public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
+        private void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
                         LocalDate date, String transactionID, String description, String place) {
                 transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
         }
@@ -93,7 +94,7 @@ public class transactionTracker {
          * 
          * @param transactionRecord
          */
-        public void addTransaction(transactionRecord transactionRecord) {
+        private void addTransaction(transactionRecord transactionRecord) {
                 transactions.add(transactionRecord);
         }
 
@@ -103,7 +104,7 @@ public class transactionTracker {
          * 
          * @param transactionID
          */
-        public void removeTransaction(String transactionID) {
+        private void removeTransaction(String transactionID) {
                 for (transactionRecord transactionRecord : transactions) {
                         if (transactionRecord.transactionID() == transactionID) {
                                 transactions.remove(transactionRecord);
@@ -116,7 +117,7 @@ public class transactionTracker {
          * 
          * @param transactionRecord
          */
-        public void removeTransaction(transactionRecord transactionRecord) {
+        private void removeTransaction(transactionRecord transactionRecord) {
                 transactions.remove(transactionRecord);
         }
 
@@ -200,5 +201,4 @@ public class transactionTracker {
                                 .collect(Collectors.toList()); // collect the filtered transactions to a list and return it
         }
 
-        //TODO connect to database so it can actually read transactions
 }
