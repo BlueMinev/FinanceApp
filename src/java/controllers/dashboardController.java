@@ -1,8 +1,19 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class dashboardController {
+
+
+    public Label homeTab;
 
     @FXML
     private void openDashboard() {
@@ -12,8 +23,25 @@ public class dashboardController {
 
     @FXML
     private void openBankAccounts() {
-        // Code to handle opening the bank accounts goes here
-        System.out.println("Opening Bank Accounts");
+        try {
+            // Load the shopping view FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/banks.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the shopping view
+            Stage shoppingStage = new Stage();
+            shoppingStage.setScene(new Scene(root));
+            shoppingStage.setTitle("BankAccounts");
+
+            // Show the shopping stage
+            shoppingStage.show();
+
+            // Close the current stage (home view)
+            Stage currentStage = (Stage) homeTab.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -48,8 +76,25 @@ public class dashboardController {
 
     @FXML
     private void openShopping() {
-        // Code to handle opening the shopping goes here
-        System.out.println("Opening Shopping");
+        try {
+            // Load the shopping view FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/shoppingView.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the shopping view
+            Stage shoppingStage = new Stage();
+            shoppingStage.setScene(new Scene(root));
+            shoppingStage.setTitle("Shopping");
+
+            // Show the shopping stage
+            shoppingStage.show();
+
+            // Close the current stage (home view)
+            Stage currentStage = (Stage) homeTab.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

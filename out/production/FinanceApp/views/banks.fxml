@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -35,11 +37,6 @@
                         <Insets left="20.0" top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label onMouseClicked="#openInvestments" text="Investments">
-                     <VBox.margin>
-                        <Insets left="20.0" top="20.0" />
-                     </VBox.margin>
-                  </Label>
                   <Label onMouseClicked="#openExpenseTracker" text="Expense Tracker">
                      <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -53,23 +50,6 @@
                   <Label onMouseClicked="#openBudget" text="Budget">
                      <VBox.margin>
                         <Insets left="20.0" top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label onMouseClicked="#openShopping" text="Shopping">
-                     <VBox.margin>
-                        <Insets left="20.0" top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label onMouseClicked="#openSettings" text="Settings">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/settings.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="10.0" top="20.0" />
                      </VBox.margin>
                   </Label>
                </children>
@@ -94,7 +74,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="second_color" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane layoutX="512.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="512.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <VBox id="menu" layoutX="14.0" layoutY="14.0" spacing="10" stylesheets="@../styles/main.css">
                      <children>
@@ -118,6 +98,73 @@
                   </TableView>
                   <Button layoutX="14.0" layoutY="361.0" onAction="#removeBankAccount" text="Remove Account" />
                   <Button layoutX="20.0" layoutY="277.0" onAction="#createBankAccount" text="Create Account" />
+               </children>
+            </AnchorPane>
+            <AnchorPane id="menu" layoutX="600.0" prefHeight="672.8" prefWidth="512" styleClass="second_color" stylesheets="@../styles/main.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox layoutX="24.0" prefHeight="400.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Account:" />
+                        <ChoiceBox fx:id="accountChoiceBox" prefWidth="200.0" />
+                        <Label text="Transaction Amount:" />
+                        <TextField fx:id="transactionAmountField" />
+      
+                        <Label text="Transaction Category:" />
+                        <ChoiceBox fx:id="transactionCategoryChoice" prefWidth="150.0" />
+      
+                        <Label text="Transaction Description:" />
+                        <TextField fx:id="transactionDescriptionField" />
+      
+                        <Label text="Payment Frequency:" />
+                        <ChoiceBox fx:id="paymentFrequencyChoice" prefWidth="150.0">
+                           <items>
+                              <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="Weekly" />
+                                 <String fx:value="Bi-weekly" />
+                                 <String fx:value="Once Off" />
+                              </FXCollections>
+                           </items>
+                        </ChoiceBox>
+      
+                        <CheckBox fx:id="transactionTypeCheckbox" text="Positive Transaction" textFill="WHITE" />
+      
+                        <Button onAction="#addTransaction" prefWidth="162.0" text="Add Transaction" />
+                     </children>
+                  </VBox>
+                  <TableView fx:id="transactionTableView" layoutX="6.0" layoutY="440.0" prefHeight="200.0" prefWidth="500.0">
+                     <columns>
+                        <TableColumn prefWidth="200.0" text="Bank Account">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="bankAccount" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Amount">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="transactionAmount" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Category">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="transactionCategory" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Description">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="transactionDescription" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Frequency">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="paymentFrequency" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Type">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="positiveTransaction" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
                </children>
             </AnchorPane>
          </children></AnchorPane>
