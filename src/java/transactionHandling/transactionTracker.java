@@ -13,7 +13,9 @@ import controllers.dashboardController;
 import database.DBController;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class transactionTracker {
@@ -56,7 +58,10 @@ public class transactionTracker {
                                 this.addTransaction((double) trnsctn.get("amount"), 
                                         (transactionTypes) trnsctn.get("transactionType"), // how is date stored as a long in the DB???
                                         (billingTypes) trnsctn.get("billingType"), 
-                                        LocalDate.parse(trnsctn.get("date").toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+                                        LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")),
+                                        (String) trnsctn.get("transactionID"),
+                                        (String) trnsctn.get("description"),
+                                        (String) trnsctn.get("place"));
                         }
                        
 
@@ -78,8 +83,8 @@ public class transactionTracker {
          * @param date
          */
         public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
-                        LocalDate date) {
-                transactions.add(new transactionRecord(amount, transactionType, billingType, date));
+                        LocalDate date, String transactionID, String description, String place) {
+                transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
         }
 
         /**

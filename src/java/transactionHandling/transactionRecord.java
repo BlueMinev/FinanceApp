@@ -11,7 +11,9 @@ public record transactionRecord(
         transactionTypes transactionType,
         billingTypes billingType,
         LocalDate date, // use isBefore() isAfter() isEqual() to compare dates
-        String transactionID) {
+        String transactionID,
+        String description,
+        String place) {
 
     /**
      * Custom constructor for the record which assigns the correct +ve or -ve value
@@ -24,8 +26,14 @@ public record transactionRecord(
      * @param date
      */
     public transactionRecord(double amount, transactionTypes transactionType, billingTypes billingType,
-            LocalDate date) {
-        this(returnAmount(amount, transactionType), transactionType, billingType, date, UUID.randomUUID().toString());
+            LocalDate date, String transactionID, String description, String place) {
+        this.amount = returnAmount(amount, transactionType);
+        this.transactionType = transactionType;
+        this.billingType = billingType;
+        this.date = date;
+        this.transactionID = transactionID;
+        this.description = description;
+        this.place = place;
     }
 
     /**
