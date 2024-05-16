@@ -56,14 +56,15 @@ public class transactionTracker {
 
                         for(Map<String, Object> trnsctn : trnsctns){
                                 this.addTransaction((double) trnsctn.get("amount"), 
-                                        (transactionTypes) trnsctn.get("transactionType"), // how is date stored as a long in the DB???
-                                        (billingTypes) trnsctn.get("billingType"), 
+                                        transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // how is date stored as a long in the DB???
+                                        billingTypes.valueOf((String)trnsctn.get("billing_type")), 
                                         LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")),
-                                        (String) trnsctn.get("transactionID"),
-                                        (String) trnsctn.get("description"),
+                                        (String) trnsctn.get("paymentID").toString(),
+                                        (String) trnsctn.get("purchase"),
                                         (String) trnsctn.get("place"));
                         }
                        
+                        //transactions = this.filterTransactions(transactionFilters.hasTransactionID(/*find a way to get a global accountID when logging in */));
 
                 }catch (SQLException e)
                 {
