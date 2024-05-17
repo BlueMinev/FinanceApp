@@ -118,8 +118,7 @@ public class TransactionController {
         transactionTypeComboBox.setItems(FXCollections.observableArrayList(transactionTypes.values()));
         billingTypeComboBox.setItems(FXCollections.observableArrayList(billingTypes.values()));
 
-        // Bind the TableView to the transactions ObservableList
-        transactionTableView.setItems(transactions);
+        transactionTableView.setItems(FXCollections.observableArrayList(tracker.transactions));
 
         // Bind the total fields to the transactionTracker values
         totalIncomeField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getTotalIn())));
@@ -167,6 +166,15 @@ public class TransactionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void updateTotalFields() {
+        totalIncomeField.textProperty().unbind();
+        totalExpensesField.textProperty().unbind();
+        balanceField.textProperty().unbind();
+
+        totalIncomeField.setText(Double.toString(tracker.getTotalIn()));
+        totalExpensesField.setText(Double.toString(tracker.getTotalOut()));
+        balanceField.setText(Double.toString(tracker.getBalance()));
     }
 
     @FXML
@@ -239,5 +247,6 @@ public class TransactionController {
     public void addTransaction(transactionRecord newRecord) {
         // You might need to get the items and add the newRecord depending on how 'transactionTableView' is defined
         this.transactionTableView.getItems().add(newRecord);
+        this.updateTotalFields();
     }
 }

@@ -23,8 +23,8 @@ public class DBController {
     public static void main(String[] args) throws SQLException {
         DBController dbController = new DBController();
         System.out.println(dbController.selectAccounts(1));
-        dbController.executeSQL("INSERT INTO tUser (fName, lName, email, uName, password)" +
-                " VALUES ('Daisy', 'Jones', 'DJon@gmail.com', 'Daisy', 'the6Rule')");
+        //dbController.executeSQL("INSERT INTO tUser (fName, lName, email, uName, password)" +
+                //" VALUES ('Daisy', 'Jones', 'DJon@gmail.com', 'Daisy', 'the6Rule')");
 
 
 //        dbController.addUser("Sophie", "Gellar", "Soph@gmail.com", "SuperSophie", "haha");

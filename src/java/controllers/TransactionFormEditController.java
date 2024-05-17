@@ -47,5 +47,18 @@ public class TransactionFormEditController {
     }
 
     public void handleEdit(ActionEvent actionEvent) {
+        Double amount = Double.parseDouble(amountField.getText());
+        transactionTypes transactionType = transactionTypeField.getValue();
+        billingTypes billingType = billingTypeField.getValue();
+        LocalDate date = dateField.getValue();
+        String transactionId = descriptionField.getText();
+        String description = descriptionField.getText();
+        String place = placeField.getText();
+
+        transactionRecord updatedRecord = new transactionRecord(amount, transactionType, billingType, date, transactionId, description, place);
+
+        // then call the database's 'update' method with the updated record.
+        
+
     }
 }

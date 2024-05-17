@@ -23,7 +23,7 @@ public class transactionTracker {
         /**
          * ArrayList for storing transactionRecord objects
          */
-        private ArrayList<transactionRecord> transactions;
+        public ArrayList<transactionRecord> transactions;
 
         private DBController dbController;
 
@@ -71,7 +71,7 @@ public class transactionTracker {
                 GlobalVariables.email = "DJon@gmail.com";
                 GlobalVariables.accountID = "0";
                 transactionTracker expTracker = new transactionTracker();
-                expTracker.addTransaction(-100, transactionTypes.INCOME, billingTypes.NA, LocalDate.now(), "1", "test", "test");
+                expTracker.addTransaction(-100, transactionTypes.INCOME, billingTypes.NA, LocalDate.now(), "test", "test");
                 System.out.println(expTracker.getBalance());
 
                 
@@ -88,7 +88,7 @@ public class transactionTracker {
         private void readPaymentTable(){
                 try{
                         // Read the payment table from the database
-                        List<Map<String, Object>> trnsctns = dbController.readTable("tPayment");
+                        List<Map<String, Object>> trnsctns = dbController.executeSQL("SELECT * FROM tPayment WHERE accountNumber = '" + accountID +"';");
 
                         // Loop through each transaction in the table
                         for(Map<String, Object> trnsctn : trnsctns){
@@ -97,14 +97,14 @@ public class transactionTracker {
                                         transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // The type of the transaction
                                         billingTypes.valueOf((String)trnsctn.get("billing_type")), // The billing type of the transaction
                                         LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")), // The date of the transaction
-                                        (String) trnsctn.get("paymentID").toString(), // The ID of the transaction
+                                         // The ID of the transaction
                                         (String) trnsctn.get("purchase"), // The description of the transaction
                                         (String) trnsctn.get("place") // The place where the transaction was made
                                         );
                         }
                        
 
-                        transactions.addAll(this.filterTransactions(transactionFilters.hasTransactionID(Integer.toString(accountID))));
+                        //transactions.addAll(this.filterTransactions(transactionFilters.hasTransactionID(Integer.toString(accountID))));
 
                 }catch (SQLException e){
                         // Print the stack trace if there is an error executing the SQL query
@@ -121,14 +121,13 @@ public class transactionTracker {
         * @param transactionType The type of the transaction.
         * @param billingType The billing type of the transaction.
         * @param date The date of the transaction.
-        * @param transactionID The ID of the transaction.
         * @param description The description of the transaction.
         * @param place The place where the transaction was made.
         */
        public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
-                        LocalDate date, String transactionID, String description, String place){
+                        LocalDate date, String description, String place){
                // Add the transaction to the transactionList
-               this.addTransactionToList(amount, transactionType, billingType, date, transactionID, description, place);
+               this.addTransactionToList(amount, transactionType, billingType, date, description, place);
                
                // Add the transaction to the database
                this.addTransactionToDB(this.accountID, amount, date.toString(), place, description, transactionType.toString(), billingType.toString());
@@ -160,8 +159,8 @@ public class transactionTracker {
          * @param date
          */
         private void addTransactionToList(double amount, transactionTypes transactionType, billingTypes billingType,
-                        LocalDate date, String transactionID, String description, String place) {
-                transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
+                        LocalDate date, String description, String place) {
+                transactions.add(new transactionRecord(amount, transactionType, billingType, date, null, description, place));
         }
 
         /**
@@ -177,7 +176,7 @@ public class transactionTracker {
         /**
          * Method for removing transaction from the list using the unique ID assigned to
          * each transaction
-         * 
+         *
          * @param transactionID
          */
         private void removeTransaction(String transactionID) {
