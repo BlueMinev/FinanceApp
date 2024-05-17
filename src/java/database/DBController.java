@@ -242,7 +242,7 @@ public class DBController {
         Connection connection = controller.getConnection();
 
         // Prepare the SQL INSERT statement
-        String insertQuery = "INSERT INTO tPayment (accountID, amount, date, place, purchase, transaction_type, billing_type)" +
+        String insertQuery = "INSERT INTO tPayment (accountNumber, amount, date, place, purchase, transaction_type, billing_type)" +
                 " VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
         // Convert String date to java.sql.Date

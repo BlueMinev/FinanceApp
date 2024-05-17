@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.sqlite.util.LibraryLoaderUtil;
 
 import controllers.GlobalVariables;
 import controllers.dashboardController;
@@ -41,14 +40,19 @@ public class transactionTracker {
                 this.readPaymentTable();
 
                 try{
-                        List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = " + GlobalVariables.email + ";");
+                        if (GlobalVariables.email != null) {
+                                List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = '" + GlobalVariables.email + "';");
 
-                        String userID = (String) response.get(0).get("userID");
+                                String userID = (String) response.get(0).get("userID");
+                                
+                                response = dbController.executeSQL("SELECT * FROM tAccount WHERE userID = " + userID + ";");
+                                this.accountID = Integer.parseInt((String)response.get(0).get("accountID"));
+
+                                GlobalVariables.accountID = Integer.toString(accountID);
+                        } else{
+                                System.out.println("email is null");
+                        }
                         
-                        response = dbController.executeSQL("SELECT * FROM tAccount WHERE userID = " + userID + ";");
-                        this.accountID = Integer.parseInt((String)response.get(0).get("accountID"));
-
-                        GlobalVariables.accountID = Integer.toString(accountID);
 
                 } 
                 catch (SQLException e){
@@ -60,13 +64,13 @@ public class transactionTracker {
         //@SuppressWarnings("unchecked")
         @SuppressWarnings("unchecked")
         public static void main(String[] args) {
-
+                GlobalVariables.email = "DJon@gmail.com";
+                GlobalVariables.accountID = "44896679";
                 transactionTracker expTracker = new transactionTracker();
-
+                expTracker.addTransaction(-100, transactionTypes.INCOME, billingTypes.NA, LocalDate.now(), "1", "test", "test");
                 System.out.println(expTracker.getBalance());
 
                 
-                expTracker.addTransactionToDB(8, 400, "2024-05-16", "McDonalds", "Too many bigmacs", "EATOUT", "NA");
 
                 
         }
@@ -85,7 +89,7 @@ public class transactionTracker {
                         // Loop through each transaction in the table
                         for(Map<String, Object> trnsctn : trnsctns){
                                 // Add the transaction to the transaction list
-                                this.addTransaction((double) trnsctn.get("amount"), // The amount of the transaction
+                                this.addTransactionToList((double) trnsctn.get("amount"), // The amount of the transaction
                                         transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // The type of the transaction
                                         billingTypes.valueOf((String)trnsctn.get("billing_type")), // The billing type of the transaction
                                         LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")), // The date of the transaction
@@ -123,7 +127,7 @@ public class transactionTracker {
                this.addTransactionToList(amount, transactionType, billingType, date, transactionID, description, place);
                
                // Add the transaction to the database
-               this.addTransactionToDB(accountID, amount, date.toString(), place, description, transactionID, place);
+               this.addTransactionToDB(this.accountID, amount, date.toString(), place, description, transactionType.toString(), billingType.toString());
        }
 
 
