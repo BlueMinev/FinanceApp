@@ -43,10 +43,14 @@ public class transactionTracker {
                         if (GlobalVariables.email != null) {
                                 List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = '" + GlobalVariables.email + "';");
 
-                                String userID = (String) response.get(0).get("userID");
+                                String userID = Integer.toString((int)response.get(0).get("id"));
                                 
-                                response = dbController.executeSQL("SELECT * FROM tAccount WHERE userID = " + userID + ";");
-                                this.accountID = Integer.parseInt((String)response.get(0).get("accountID"));
+                                response = dbController.executeSQL("SELECT * FROM tAccount WHERE ownerid = " + userID + ";");
+                                if (response.size() > 0){
+                                        this.accountID = Integer.parseInt((String)response.get(0).get("ownerid"));
+                                } else{
+                                        System.out.println("no account found");
+                                }
 
                                 GlobalVariables.accountID = Integer.toString(accountID);
                         } else{
@@ -65,7 +69,7 @@ public class transactionTracker {
         @SuppressWarnings("unchecked")
         public static void main(String[] args) {
                 GlobalVariables.email = "DJon@gmail.com";
-                GlobalVariables.accountID = "44896679";
+                GlobalVariables.accountID = "0";
                 transactionTracker expTracker = new transactionTracker();
                 expTracker.addTransaction(-100, transactionTypes.INCOME, billingTypes.NA, LocalDate.now(), "1", "test", "test");
                 System.out.println(expTracker.getBalance());
