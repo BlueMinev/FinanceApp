@@ -56,7 +56,7 @@ public class TransactionController {
         LocalDate date = datePicker.getValue();
 
         transactionRecord newRecord = new transactionRecord(amount, type, billing, date, null, null, null);
-        tracker.addTransaction(newRecord);
+        tracker.addTransaction(amount, type, billing, date, null, null, null); // this might make a duplicate?
         transactions.add(newRecord);
     }
 
@@ -66,7 +66,7 @@ public class TransactionController {
         if (selectedIndex >= 0) {
             transactionRecord record = transactions.get(selectedIndex);
             record.setDisableProperty(false);
-            // Update the UI components to show the record's data
+            //TODO Update the UI components to show the record's data
         }
     }
 

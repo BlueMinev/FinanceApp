@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import org.sqlite.util.LibraryLoaderUtil;
 
+import controllers.GlobalVariables;
 import controllers.dashboardController;
 import database.DBController;
 
@@ -27,6 +28,8 @@ public class transactionTracker {
 
         private DBController dbController;
 
+        private int accountID;
+
         /**
          * Constructor for the transactionTracker class
          * instantiates transactions as an arraylist
@@ -36,6 +39,21 @@ public class transactionTracker {
                 dbController = new DBController();
 
                 this.readPaymentTable();
+
+                try{
+                        List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = " + GlobalVariables.email + ";");
+
+                        String userID = (String) response.get(0).get("userID");
+                        
+                        response = dbController.executeSQL("SELECT * FROM tAccount WHERE userID = " + userID + ";");
+                        this.accountID = Integer.parseInt((String)response.get(0).get("accountID"));
+
+                        GlobalVariables.accountID = Integer.toString(accountID);
+
+                } 
+                catch (SQLException e){
+                        e.printStackTrace();
+                }
         }
 
         // kinda just for testing atm lol
@@ -53,39 +71,75 @@ public class transactionTracker {
                 
         }
         
-       private void readPaymentTable(){
+       /**
+        * Reads the payment table from the database and adds the transactions to the transaction list.
+        * 
+        * @throws SQLException if there is an error executing the SQL query
+        */
+       @SuppressWarnings("unchecked")
+        private void readPaymentTable(){
                 try{
+                        // Read the payment table from the database
                         List<Map<String, Object>> trnsctns = dbController.readTable("tPayment");
 
+                        // Loop through each transaction in the table
                         for(Map<String, Object> trnsctn : trnsctns){
-                                this.addTransaction((double) trnsctn.get("amount"), 
-                                        transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // how is date stored as a long in the DB???
-                                        billingTypes.valueOf((String)trnsctn.get("billing_type")), 
-                                        LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")),
-                                        (String) trnsctn.get("paymentID").toString(),
-                                        (String) trnsctn.get("purchase"),
-                                        (String) trnsctn.get("place"));
+                                // Add the transaction to the transaction list
+                                this.addTransaction((double) trnsctn.get("amount"), // The amount of the transaction
+                                        transactionTypes.valueOf((String)trnsctn.get("transaction_type")), // The type of the transaction
+                                        billingTypes.valueOf((String)trnsctn.get("billing_type")), // The billing type of the transaction
+                                        LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")), // The date of the transaction
+                                        (String) trnsctn.get("paymentID").toString(), // The ID of the transaction
+                                        (String) trnsctn.get("purchase"), // The description of the transaction
+                                        (String) trnsctn.get("place") // The place where the transaction was made
+                                        );
                         }
                        
-                        //transactions = this.filterTransactions(transactionFilters.hasTransactionID(/*find a way to get a global accountID when logging in */));
 
-                }catch (SQLException e)
-                {
+                        transactions.addAll(this.filterTransactions(transactionFilters.hasTransactionID(Integer.toString(accountID))));
+
+                }catch (SQLException e){
+                        // Print the stack trace if there is an error executing the SQL query
                         e.printStackTrace();
                 }
 
                 
-       }
+       } // End of readPaymentTable method
 
+       /**
+        * Adds a transaction to the transactions List and to the database.
+        * 
+        * @param amount The amount of the transaction.
+        * @param transactionType The type of the transaction.
+        * @param billingType The billing type of the transaction.
+        * @param date The date of the transaction.
+        * @param transactionID The ID of the transaction.
+        * @param description The description of the transaction.
+        * @param place The place where the transaction was made.
+        */
        public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
                         LocalDate date, String transactionID, String description, String place){
-                this.addTransaction(amount, transactionType, billingType, date, transactionID, description, place); 
-                this.addTransactionToDB(null, amount, place, place, description, transactionID, place);               
+               // Add the transaction to the transactionList
+               this.addTransactionToList(amount, transactionType, billingType, date, transactionID, description, place);
+               
+               // Add the transaction to the database
+               this.addTransactionToDB(accountID, amount, date.toString(), place, description, transactionID, place);
        }
 
+
+       /**
+        * Adds a transaction to the database.
+        * 
+        * @param accountNum The account number of the user.
+        * @param amount The amount of the transaction.
+        * @param date The date of the transaction in the format "yyyy-MM-dd".
+        * @param place The place where the transaction was made.
+        * @param purchase The purchase description.
+        * @param transactionType The type of the transaction.
+        * @param billingType The billing type of the transaction.
+        */
        private void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
                dbController.addPayment(accountNum, amount, date, place, purchase, transactionType, billingType);
-
        }
 
         /**
