@@ -39,8 +39,6 @@ public class transactionTracker {
                 transactions = new ArrayList<>();
                 dbController = new DBController();
 
-                this.readPaymentTable();
-
                 try{
                         if (GlobalVariables.email != null) {
                                 List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = '" + GlobalVariables.email + "';");
@@ -57,6 +55,7 @@ public class transactionTracker {
                                 GlobalVariables.accountID = Integer.toString(accountID);
                         } else{
                                 System.out.println("email is null");
+                                accountID = Integer.parseInt(GlobalVariables.accountID);
                         }
                         
 
@@ -64,16 +63,20 @@ public class transactionTracker {
                 catch (SQLException e){
                         e.printStackTrace();
                 }
+
+                this.readPaymentTable();
         }
 
         // kinda just for testing atm lol
         //@SuppressWarnings("unchecked")
         @SuppressWarnings("unchecked")
         public static void main(String[] args) {
+                GlobalVariables.accountID = "0";
                 transactionTracker tracker = new transactionTracker();
-                System.out.println(tracker.deleteTransaction("2"));
                 
+                tracker.editTransaction("8", 1000, "1716159600000", "errortest", "aaa", "TRANSPORT", "NA");
         }
+
         
        /**
         * Reads the payment table from the database and adds the transactions to the transaction list.
@@ -137,7 +140,17 @@ public class transactionTracker {
        //* Doesnt work :( */
        public void editTransaction(String transactionID, double amount, String date, String place, String description, String transactionType, String billingType){
                 try{
-                        dbController.executeSQL("UPDATE tPayment SET amount = " + amount + ", date = " + date + ", place = " + place + ", description = " + description + ", transaction_type = " + transactionType + ", billing_type = " + billingType + " WHERE paymentID = " + transactionID + ";");
+                        StringBuilder queryBuilder = new StringBuilder();
+                        queryBuilder.append("UPDATE tPayment SET ");
+                        queryBuilder.append("amount = '").append(amount).append("', ");
+                        queryBuilder.append("date = '").append(date).append("', ");
+                        queryBuilder.append("place = '").append(place).append("', ");
+                        queryBuilder.append("purchase = '").append(description).append("', ");
+                        queryBuilder.append("transaction_type = '").append(transactionType).append("', ");
+                        queryBuilder.append("billing_type = '").append(billingType).append("' ");
+                        queryBuilder.append("WHERE paymentID = ").append(transactionID).append(";");
+
+                        dbController.executeSQL(queryBuilder.toString());
 
                         
                 } catch(SQLException e){
@@ -200,7 +213,7 @@ public class transactionTracker {
          * 
          * @param transactionRecord
          */
-        private void addTransaction(transactionRecord transactionRecord) {
+        private void addTransactionByRecord(transactionRecord transactionRecord) {
                 transactions.add(transactionRecord);
         }
 
