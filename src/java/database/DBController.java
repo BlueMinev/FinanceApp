@@ -420,7 +420,7 @@ public class DBController {
                 }
 
                 resultSet.close();
-            }
+            } 
 
             statement.close();
         } catch (SQLException e) {

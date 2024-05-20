@@ -32,6 +32,8 @@ public class transactionTracker {
         /**
          * Constructor for the transactionTracker class
          * instantiates transactions as an arraylist
+         * and calls the readPaymentTable method to populate the transaction list
+         * Attempts to set the global var aaccountID through SQL queries
          */
         public transactionTracker() {
                 transactions = new ArrayList<>();
@@ -68,14 +70,8 @@ public class transactionTracker {
         //@SuppressWarnings("unchecked")
         @SuppressWarnings("unchecked")
         public static void main(String[] args) {
-                GlobalVariables.email = "DJon@gmail.com";
-                GlobalVariables.accountID = "0";
-                transactionTracker expTracker = new transactionTracker();
-                expTracker.addTransaction(-100, transactionTypes.INCOME, billingTypes.NA, LocalDate.now(), "test", "test");
-                System.out.println(expTracker.getBalance());
-
-                
-
+                transactionTracker tracker = new transactionTracker();
+                System.out.println(tracker.deleteTransaction("2"));
                 
         }
         
@@ -113,6 +109,41 @@ public class transactionTracker {
 
                 
        } // End of readPaymentTable method
+
+        /**
+         * Deletes a transaction from the tPayment table in the database.
+         *
+         * @param  transactionID  the ID of the transaction to be deleted
+         * @return                true if the transaction was successfully deleted, false otherwise
+         */
+       public boolean deleteTransaction(String transactionID){
+                try{
+                        dbController.executeSQL("DELETE FROM tPayment WHERE paymentID = " + transactionID + ";");
+
+                        if (dbController.executeSQL("SELECT 1 FROM tPayment WHERE paymentID = " + transactionID + ";").size() == 0 ){
+                                removeTransaction(transactionID);
+                                return true;
+                        }
+                        else{
+                                return false;
+                        }
+                } catch(SQLException e){
+                        e.printStackTrace();
+                        return false;
+                }
+
+       }
+
+       //* Doesnt work :( */
+       public void editTransaction(String transactionID, double amount, String date, String place, String description, String transactionType, String billingType){
+                try{
+                        dbController.executeSQL("UPDATE tPayment SET amount = " + amount + ", date = " + date + ", place = " + place + ", description = " + description + ", transaction_type = " + transactionType + ", billing_type = " + billingType + " WHERE paymentID = " + transactionID + ";");
+
+                        
+                } catch(SQLException e){
+                        e.printStackTrace();
+                }
+       }
 
        /**
         * Adds a transaction to the transactions List and to the database.
