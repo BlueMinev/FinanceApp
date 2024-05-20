@@ -11,17 +11,21 @@ import transactionHandling.TransactionController;
 import transactionHandling.billingTypes;
 import transactionHandling.transactionRecord;
 import transactionHandling.transactionTypes;
+import transactionHandling.transactionTracker;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.time.format.DateTimeFormatter.*;
+
 public class TransactionFormController {
 
     public Button submitButton;
-    private Map<String, transactionRecord> transactions = new HashMap<>();
     private TransactionController transactionController;
+    private transactionTracker tracker = new transactionTracker();
 
     public void setTransactionController(TransactionController transactionController) {
         this.transactionController = transactionController;
@@ -48,23 +52,18 @@ public class TransactionFormController {
     @FXML
     private void handleSubmit() {
         double amount = Double.parseDouble(amountField.getText());
-        transactionTypes type = transactionTypeField.getValue();
-        billingTypes billing = billingTypeField.getValue();
-        LocalDate date = dateField.getValue();
-        String description = descriptionField.getText();
+        transactionTypes transactionType = transactionTypeField.getValue();
+        billingTypes billingType = billingTypeField.getValue();
+        LocalDate date = LocalDate.parse(dateField.getValue().format(ofPattern("yyyy-MM-dd")));
+        String purchase = descriptionField.getText();
         String place = placeField.getText();
+        int accountNum = 0;
 
-        // Generate a transaction ID
-        String transactionID = UUID.randomUUID().toString();
+        //Add new transaction
+        this.tracker.addTransaction(amount,transactionType, billingType, date, purchase,place);
 
-        // Create the transactionRecord
-        transactionRecord newRecord = new transactionRecord(amount, type, billing, date, transactionID, description, place);
-
-        // Add the new transactionRecord to the transactions Map
-        transactions.put(transactionID, newRecord);
-
-        // Add the new transaction to the TableView in TransactionController
-        transactionController.addTransaction(newRecord);
+        // Update the TableView
+        transactionController.addTransaction();
 
         // Assuming the handleSubmit is connected to button click event
         Stage stage = (Stage) submitButton.getScene().getWindow();

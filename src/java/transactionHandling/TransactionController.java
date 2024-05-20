@@ -3,7 +3,6 @@ package transactionHandling;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
 
 import controllers.TransactionFormController;
 import controllers.TransactionFormEditController;
@@ -33,8 +32,6 @@ public class TransactionController {
     private TableColumn<transactionRecord, billingTypes> billingTypeColumn;
     @FXML
     private TableColumn<transactionRecord, LocalDate> dateColumn;
-    @FXML
-    private TableColumn<transactionRecord, String> transactionIdColumn;
     @FXML
     private TableColumn<transactionRecord, String> descriptionColumn;
     @FXML
@@ -134,8 +131,6 @@ public class TransactionController {
                 new ReadOnlyObjectWrapper<>(cellData.getValue().billingType()));
         dateColumn.setCellValueFactory(cellData ->
                 new ReadOnlyObjectWrapper<>(cellData.getValue().date()));
-        transactionIdColumn.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().transactionID()));
         descriptionColumn.setCellValueFactory(cellData ->
                 new ReadOnlyStringWrapper(cellData.getValue().description()));
         placeColumn.setCellValueFactory(cellData ->
@@ -244,9 +239,14 @@ public class TransactionController {
         handleFilterTransactions();
     }
 
-    public void addTransaction(transactionRecord newRecord) {
-        // You might need to get the items and add the newRecord depending on how 'transactionTableView' is defined
-        this.transactionTableView.getItems().add(newRecord);
-        this.updateTotalFields();
+    public void addTransaction() {
+        // Clear the TableView items
+        transactionTableView.getItems().clear();
+
+        // Add the updated list of transactions
+        transactionTableView.setItems(FXCollections.observableArrayList(tracker.transactions));
+
+        // Refresh the TableView
+        transactionTableView.refresh();
     }
 }

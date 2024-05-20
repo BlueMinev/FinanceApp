@@ -28,7 +28,6 @@
             <TableColumn prefWidth="150.0" text="Transaction Type" fx:id="transactionTypeColumn" />
             <TableColumn prefWidth="150.0" text="Billing Type" fx:id="billingTypeColumn"/>
             <TableColumn prefWidth="100.0" text="Date" fx:id="dateColumn"/>
-            <TableColumn prefWidth="150.0" text="Transaction ID" fx:id="transactionIdColumn"/>
             <TableColumn prefWidth="150.0" text="Description" fx:id="descriptionColumn"/>
             <TableColumn prefWidth="150.0" text="Place" fx:id="placeColumn"/>
             <TableColumn fx:id="actionColumn" prefWidth="150.0" text="Actions" />
