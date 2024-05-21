@@ -11,25 +11,19 @@ import transactionHandling.TransactionController;
 import transactionHandling.billingTypes;
 import transactionHandling.transactionRecord;
 import transactionHandling.transactionTypes;
-import transactionHandling.transactionTracker;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
-import static java.time.format.DateTimeFormatter.*;
 
 public class TransactionFormController {
 
     public Button submitButton;
     private TransactionController transactionController;
-    private transactionTracker tracker = new transactionTracker();
 
     public void setTransactionController(TransactionController transactionController) {
         this.transactionController = transactionController;
     }
+
     @FXML
     private TextField amountField;
     @FXML
@@ -54,18 +48,20 @@ public class TransactionFormController {
         double amount = Double.parseDouble(amountField.getText());
         transactionTypes transactionType = transactionTypeField.getValue();
         billingTypes billingType = billingTypeField.getValue();
-        LocalDate date = LocalDate.parse(dateField.getValue().format(ofPattern("yyyy-MM-dd")));
+        LocalDate date = dateField.getValue();
         String purchase = descriptionField.getText();
         String place = placeField.getText();
-        int accountNum = 0;
 
-        //Add new transaction
-        this.tracker.addTransaction(amount,transactionType, billingType, date, purchase,place);
 
-        // Update the TableView
-        transactionController.addTransaction();
+        // Create a new transactionRecord object
+        transactionRecord newTransaction = new transactionRecord(
+                amount, transactionType, billingType, date, null, purchase, place
+        );
 
-        // Assuming the handleSubmit is connected to button click event
+        // Update the TableView in TransactionController
+        transactionController.addTransaction(newTransaction);
+
+        // Close the form
         Stage stage = (Stage) submitButton.getScene().getWindow();
         stage.close();
     }

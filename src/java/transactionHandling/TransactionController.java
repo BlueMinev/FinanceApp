@@ -23,7 +23,10 @@ public class TransactionController {
     @FXML
     public TableColumn<transactionRecord, Void> actionColumn;
     public Button addTransactionButton;
-    @FXML private TableView<transactionRecord> transactionTableView;
+    @FXML
+    private TableColumn<transactionRecord, String> transactionIdColumn;
+    @FXML
+    private TableView<transactionRecord> transactionTableView;
     @FXML
     private TableColumn<transactionRecord, Double> amountColumn;
     @FXML
@@ -36,16 +39,23 @@ public class TransactionController {
     private TableColumn<transactionRecord, String> descriptionColumn;
     @FXML
     private TableColumn<transactionRecord, String> placeColumn;
-    @FXML private ComboBox<transactionTypes> transactionTypeComboBox;
-    @FXML private ComboBox<billingTypes> billingTypeComboBox;
-    @FXML private DatePicker datePicker;
-    @FXML private TextField totalIncomeField;
-    @FXML private TextField totalExpensesField;
-    @FXML private TextField balanceField;
+    @FXML
+    private ComboBox<transactionTypes> transactionTypeComboBox;
+    @FXML
+    private ComboBox<billingTypes> billingTypeComboBox;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TextField totalIncomeField;
+    @FXML
+    private TextField totalExpensesField;
+    @FXML
+    private TextField balanceField;
 
     private transactionTracker tracker;
     private transactionFilters filters;
     private ObservableList<transactionRecord> transactions;
+    private ObservableList<transactionRecord> transactionList;
 
     public TransactionController() {
         this.tracker = new transactionTracker();
@@ -57,11 +67,9 @@ public class TransactionController {
     private void initialize() {
         setupTableColumns();
         actionColumn.setCellFactory(new Callback<TableColumn<transactionRecord, Void>, TableCell<transactionRecord, Void>>() {
-
             @Override
             public TableCell<transactionRecord, Void> call(final TableColumn<transactionRecord, Void> param) {
                 return new TableCell<transactionRecord, Void>() {
-
                     private final Button editButton = new Button("Edit");
                     private final Button deleteButton = new Button("Delete");
                     private final HBox hbox = new HBox(editButton, deleteButton);
@@ -71,17 +79,13 @@ public class TransactionController {
                             transactionRecord record = getTableView().getItems().get(getIndex());
 
                             try {
-                                // Load the FXML file.
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/transactionFormEdit.fxml"));
                                 Parent parent = fxmlLoader.load();
 
-                                // Get the controller instance
                                 TransactionFormEditController controller = fxmlLoader.getController();
-
-                                // Pass the selected record to the controller
+                                controller.setTransactionController(TransactionController.this);  // Pass the main controller
                                 controller.setRecord(record);
 
-                                // Create the stage and show the scene
                                 Stage stage = new Stage();
                                 stage.setScene(new Scene(parent));
                                 stage.show();
@@ -91,12 +95,13 @@ public class TransactionController {
                         });
 
 
-
                         deleteButton.setOnAction(event -> {
                             transactionRecord record = getTableView().getItems().get(getIndex());
-                            getTableView().getItems().remove(record);
+                            if (tracker.deleteTransaction(record.transactionID())) {
+                                getTableView().getItems().remove(record);
+                                updateTotalFields();
+                            }
                         });
-
                     }
 
                     @Override
@@ -111,62 +116,47 @@ public class TransactionController {
                 };
             }
         });
-        // Initialize the ComboBoxes with available options
+
         transactionTypeComboBox.setItems(FXCollections.observableArrayList(transactionTypes.values()));
         billingTypeComboBox.setItems(FXCollections.observableArrayList(billingTypes.values()));
 
-        transactionTableView.setItems(FXCollections.observableArrayList(tracker.transactions));
+        transactions.addAll(tracker.transactions);
+        transactionTableView.setItems(transactions);
 
-        // Bind the total fields to the transactionTracker values
-        totalIncomeField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getTotalIn())));
-        totalExpensesField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getTotalOut())));
-        balanceField.textProperty().bind(new SimpleStringProperty(Double.toString(tracker.getBalance())));
+        totalIncomeField.setText(Double.toString(tracker.getTotalIn()));
+        totalExpensesField.setText(Double.toString(tracker.getTotalOut()));
+        balanceField.setText(Double.toString(tracker.getBalance()));
     }
+
     private void setupTableColumns() {
-        amountColumn.setCellValueFactory(cellData ->
-                new SimpleDoubleProperty(cellData.getValue().amount()).asObject());
-        transactionTypeColumn.setCellValueFactory(cellData ->
-                new ReadOnlyObjectWrapper<>(cellData.getValue().transactionType()));
-        billingTypeColumn.setCellValueFactory(cellData ->
-                new ReadOnlyObjectWrapper<>(cellData.getValue().billingType()));
-        dateColumn.setCellValueFactory(cellData ->
-                new ReadOnlyObjectWrapper<>(cellData.getValue().date()));
-        descriptionColumn.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().description()));
-        placeColumn.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().place()));
+        amountColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().amount()).asObject());
+        transactionTypeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().transactionType()));
+        billingTypeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().billingType()));
+        dateColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().date()));
+        transactionIdColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().transactionID()));
+        descriptionColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().description()));
+        placeColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().place()));
     }
 
     @FXML
     private void handleAddTransaction(ActionEvent event) {
         try {
-            // Load the fxml file for the dialog
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/transactionForm.fxml"));
             Parent root = loader.load();
 
-            // Get the controller of the loaded FXML
             TransactionFormController formController = loader.getController();
-
-            // Pass the reference of current class (TransactionController) to the new form
             formController.setTransactionController(this);
 
-            // Create a new stage for the dialog
             Stage stage = new Stage();
             stage.setTitle("Add Transaction");
             stage.setScene(new Scene(root));
-
-            // Show the dialog
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void updateTotalFields() {
-        totalIncomeField.textProperty().unbind();
-        totalExpensesField.textProperty().unbind();
-        balanceField.textProperty().unbind();
 
+    private void updateTotalFields() {
         totalIncomeField.setText(Double.toString(tracker.getTotalIn()));
         totalExpensesField.setText(Double.toString(tracker.getTotalOut()));
         balanceField.setText(Double.toString(tracker.getBalance()));
@@ -178,7 +168,6 @@ public class TransactionController {
         if (selectedIndex >= 0 && selectedIndex < transactions.size()) {
             transactionRecord oldRecord = transactions.get(selectedIndex);
             if (oldRecord != null) {
-                // Create a new record with required changes
                 transactionRecord newRecord = new transactionRecord(
                         oldRecord.amount(),
                         oldRecord.transactionType(),
@@ -188,13 +177,9 @@ public class TransactionController {
                         oldRecord.description(),
                         oldRecord.place());
 
-                // Replace oldRecord with newRecord in the transactions list
                 transactions.set(selectedIndex, newRecord);
-
-                // Now update your UI component accordingly
                 transactionTableView.getItems().set(selectedIndex, newRecord);
                 transactionTableView.refresh();
-
             } else {
                 // Handle the situation when 'oldRecord' is null, maybe showing an error message or logging it.
             }
@@ -203,16 +188,6 @@ public class TransactionController {
             // maybe show an error message or log it.
         }
     }
-
-//    @FXML
-//    private void handleDeleteTransaction() {
-//        int selectedIndex = transactionTableView.getSelectionModel().getSelectedIndex();
-//        if (selectedIndex >= 0) {
-//            transactionRecord record = transactions.get(selectedIndex);
-//            tracker.removeTransaction(record);
-//            transactions.remove(record);
-//        }
-//    }
 
     @FXML
     private void handleFilterTransactions() {
@@ -239,14 +214,12 @@ public class TransactionController {
         handleFilterTransactions();
     }
 
-    public void addTransaction() {
-        // Clear the TableView items
-        transactionTableView.getItems().clear();
-
-        // Add the updated list of transactions
-        transactionTableView.setItems(FXCollections.observableArrayList(tracker.transactions));
-
-        // Refresh the TableView
+    public void addTransaction(transactionRecord record) {
+        tracker.addTransaction(record.amount(), record.transactionType(), record.billingType(), record.date(), record.description(), record.place());
+        transactions.add(record);
         transactionTableView.refresh();
+        updateTotalFields();
     }
+
+
 }

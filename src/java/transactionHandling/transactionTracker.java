@@ -1,5 +1,6 @@
 package transactionHandling;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class transactionTracker {
                                         (String) trnsctn.get("place") // The place where the transaction was made
                                         );
                         }
-                       
+
 
                         //transactions.addAll(this.filterTransactions(transactionFilters.hasTransactionID(Integer.toString(accountID))));
 
@@ -110,7 +111,7 @@ public class transactionTracker {
                         e.printStackTrace();
                 }
 
-                
+
        } // End of readPaymentTable method
 
         /**
@@ -189,14 +190,14 @@ public class transactionTracker {
         * @param transactionType The type of the transaction.
         * @param billingType The billing type of the transaction.
         */
-       private void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
+       public void addTransactionToDB(int accountNum, double amount, String date, String place, String purchase, String transactionType, String billingType){
                dbController.addPayment(accountNum, amount, date, place, purchase, transactionType, billingType);
        }
 
         /**
          * Adds a transaction to the transactions List
          * Takes all parameters needed to create a transactionRecord
-         * 
+         *
          * @param amount
          * @param transactionType
          * @param billingType
@@ -224,11 +225,14 @@ public class transactionTracker {
          * @param transactionID
          */
         private void removeTransaction(String transactionID) {
-                for (transactionRecord transactionRecord : transactions) {
-                        if (transactionRecord.transactionID() == transactionID) {
-                                transactions.remove(transactionRecord);
-                        }
+            Iterator<transactionRecord> iterator = transactions.iterator();
+            while (iterator.hasNext()) {
+                transactionRecord record = iterator.next();
+                if (record.transactionID().equals(transactionID)) {
+                    iterator.remove();
+                    break;
                 }
+            }
         }
 
         /**

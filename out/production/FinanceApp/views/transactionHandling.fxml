@@ -24,6 +24,7 @@
    <center>
       <TableView fx:id="transactionTableView">
          <columns>
+            <TableColumn prefWidth="50" text="ID" fx:id="transactionIdColumn"/>
             <TableColumn prefWidth="100.0" text="Amount" fx:id="amountColumn"/>
             <TableColumn prefWidth="150.0" text="Transaction Type" fx:id="transactionTypeColumn" />
             <TableColumn prefWidth="150.0" text="Billing Type" fx:id="billingTypeColumn"/>
