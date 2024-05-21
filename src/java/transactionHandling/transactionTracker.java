@@ -137,14 +137,13 @@ public class transactionTracker {
 
        }
 
-       //* Doesnt work :( */
        public void editTransaction(String transactionID, double amount, transactionTypes transactionType, billingTypes billingType,
                                    LocalDate date, String description, String place){
                 try{
                         StringBuilder queryBuilder = new StringBuilder();
                         queryBuilder.append("UPDATE tPayment SET ");
                         queryBuilder.append("amount = '").append(amount).append("', ");
-                        queryBuilder.append("date = '").append(date).append("', ");
+                        queryBuilder.append("date = '").append(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()).append("', ");
                         queryBuilder.append("place = '").append(place).append("', ");
                         queryBuilder.append("purchase = '").append(description).append("', ");
                         queryBuilder.append("transaction_type = '").append(transactionType).append("', ");
