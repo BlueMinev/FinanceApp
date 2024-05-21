@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +16,6 @@ import transactionHandling.transactionTypes;
 import java.time.LocalDate;
 
 public class TransactionFormEditController {
-    public Button editButton;
     @FXML
     private TextField amountField;
     @FXML
@@ -28,9 +28,16 @@ public class TransactionFormEditController {
     private TextField descriptionField;
     @FXML
     private TextField placeField;
+    @FXML
+    public Button editButton;
 
     private transactionRecord record;
     private TransactionController transactionController;
+    @FXML
+    public void initialize() {
+        transactionTypeField.setItems(FXCollections.observableArrayList(transactionTypes.values()));
+        billingTypeField.setItems(FXCollections.observableArrayList(billingTypes.values()));
+    }
 
     public void setRecord(transactionRecord record) {
         this.record = record;
@@ -47,6 +54,7 @@ public class TransactionFormEditController {
     public void setTransactionController(TransactionController transactionController) {
         this.transactionController = transactionController;
     }
+
     @FXML
     public void handleEdit(ActionEvent actionEvent) {
         double amount = Double.parseDouble(amountField.getText());
@@ -57,7 +65,7 @@ public class TransactionFormEditController {
         String place = placeField.getText();
 
         transactionRecord updatedRecord = new transactionRecord(amount, transactionType, billingType, date, record.transactionID(), description, place);
-      //  transactionController.updateTransaction(updatedRecord);
+        transactionController.editTransaction(updatedRecord);
 
         // Close the stage
         Stage stage = (Stage) editButton.getScene().getWindow();

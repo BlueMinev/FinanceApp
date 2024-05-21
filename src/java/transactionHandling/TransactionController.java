@@ -84,7 +84,7 @@ public class TransactionController {
 
                                 TransactionFormEditController controller = fxmlLoader.getController();
                                 controller.setTransactionController(TransactionController.this);  // Pass the main controller
-                                controller.setRecord(record);
+                                controller.setRecord(record); // Pass the selected record to the edit form
 
                                 Stage stage = new Stage();
                                 stage.setScene(new Scene(parent));
@@ -220,6 +220,21 @@ public class TransactionController {
         transactionTableView.refresh();
         updateTotalFields();
     }
+    public void editTransaction(transactionRecord record) {
+        tracker.editTransaction(record.transactionID(), record.amount(), record.transactionType(), record.billingType(), record.date(), record.description(), record.place());
+
+        // Find the index of the existing record and update it in the list
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).transactionID().equals(record.transactionID())) {
+                transactions.set(i, record);
+                break;
+            }
+        }
+
+        transactionTableView.refresh();
+        updateTotalFields();
+    }
+
 
 
 }

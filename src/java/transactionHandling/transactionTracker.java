@@ -10,14 +10,12 @@ import java.util.stream.Stream;
 
 
 import controllers.GlobalVariables;
-import controllers.dashboardController;
 import database.DBController;
 
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 public class transactionTracker {
 
@@ -140,7 +138,8 @@ public class transactionTracker {
        }
 
        //* Doesnt work :( */
-       public void editTransaction(String transactionID, double amount, String date, String place, String description, String transactionType, String billingType){
+       public void editTransaction(String transactionID, double amount, transactionTypes transactionType, billingTypes billingType,
+                                   LocalDate date, String description, String place){
                 try{
                         StringBuilder queryBuilder = new StringBuilder();
                         queryBuilder.append("UPDATE tPayment SET ");
@@ -154,7 +153,7 @@ public class transactionTracker {
 
                         dbController.executeSQL(queryBuilder.toString());
 
-                        
+
                 } catch(SQLException e){
                         e.printStackTrace();
                 }
