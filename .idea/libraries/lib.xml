@@ -2,6 +2,7 @@
   <library name="lib">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../../../../java/javafx-sdk-21.0.2/lib" />
+      <root url="jar://$USER_HOME$/Downloads/slf4j-api-2.0.13.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

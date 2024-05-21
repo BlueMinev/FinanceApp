@@ -1,0 +1,15 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        ".idea/libraries/sqlite-jdbc-3.45.3.0.jar",
+        ".idea/libraries/slf4j-api-2.0.13.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.base.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.controls.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.fxml.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.graphics.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.media.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.swing.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx.web.jar",
+        ".idea/libraries/javafx-sdk-22.0.1/lib/javafx-swt.jar"
+    ]
+}
