@@ -75,7 +75,7 @@ public class transactionTracker {
                 GlobalVariables.accountID = "0";
                 transactionTracker tracker = new transactionTracker();
                 
-                tracker.editTransaction("8", 1000, "1716159600000", "errortest", "aaa", "TRANSPORT", "NA");
+                
         }
 
         
@@ -99,7 +99,8 @@ public class transactionTracker {
                                         LocalDate.ofInstant(Instant.ofEpochMilli((long) trnsctn.get("date")), ZoneId.of("UTC")), // The date of the transaction
                                          // The ID of the transaction
                                         (String) trnsctn.get("purchase"), // The description of the transaction
-                                        (String) trnsctn.get("place") // The place where the transaction was made
+                                        (String) trnsctn.get("place"), // The place where the transaction was made
+                                        (String) Integer.toString((int)trnsctn.get("paymentID"))
                                         );
                         }
 
@@ -172,7 +173,7 @@ public class transactionTracker {
        public void addTransaction(double amount, transactionTypes transactionType, billingTypes billingType,
                         LocalDate date, String description, String place){
                // Add the transaction to the transactionList
-               this.addTransactionToList(amount, transactionType, billingType, date, description, place);
+               this.addTransactionToList(amount, transactionType, billingType, date, description, place, null);
                
                // Add the transaction to the database
                this.addTransactionToDB(this.accountID, amount, date.toString(), place, description, transactionType.toString(), billingType.toString());
@@ -204,8 +205,8 @@ public class transactionTracker {
          * @param date
          */
         private void addTransactionToList(double amount, transactionTypes transactionType, billingTypes billingType,
-                        LocalDate date, String description, String place) {
-                transactions.add(new transactionRecord(amount, transactionType, billingType, date, null, description, place));
+                        LocalDate date, String description, String place, String transactionID) {
+                transactions.add(new transactionRecord(amount, transactionType, billingType, date, transactionID, description, place));
         }
 
         /**
