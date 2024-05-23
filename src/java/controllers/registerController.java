@@ -46,7 +46,7 @@ public class registerController implements Initializable{
         String uName = uNameField.getText();
         String password = passwordField1.getText();
 
-        dbController.addUser(fName, lName, Email, uName, password);
+        dbController.addUser(fName, lName, Email, uName, Hasher.getHashedValue(password));
 
     }
 

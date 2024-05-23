@@ -1,3 +1,5 @@
+package controllers;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.math.BigInteger;
@@ -6,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Hasher {
 
-    public String getHashedValue(String input) {  
+    public static String getHashedValue(String input) {
         try {
             return toHexString(getSHA(input));
         } catch (NoSuchAlgorithmException e) {
@@ -16,17 +18,17 @@ public class Hasher {
 
     }
 
-    private byte[] getSHA(String input) throws NoSuchAlgorithmException {
+    private static byte[] getSHA(String input) throws NoSuchAlgorithmException {
         // Static getInstance method is called with hashing SHA
         MessageDigest md = MessageDigest.getInstance("SHA-256"); 
-        md.update(Salter.getRandomSalt());
+        //md.update(Salter.getRandomSalt());
         // digest() method called
         // to calculate message digest of an input
         // and return array of byte
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    private String toHexString(byte[] hash) {
+    private static String toHexString(byte[] hash) {
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
 

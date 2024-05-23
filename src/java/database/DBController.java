@@ -287,33 +287,31 @@ public class DBController {
 
     /**
      * Adds an account record to the database.
-     * @param accountNumber The account number, which is unique for each account.
      * @param type The type of the account (e.g., Savings, Checking).
      * @param ownerid The user ID of the account owner.
      * @param balance The initial balance of the account, defaulting to 0 if not specified.
      * @param name The name or description of the account.
      */
     //TODO: add more constraint(accountNumber set amount of numbers)
-    public void addAccount(int accountNumber, String type, int ownerid, double balance, String name) {
+    public void addAccount(String type, int ownerid, double balance, String name) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
         // Request a connection to the database
         Connection connection = controller.getConnection();
 
         // Prepare the SQL INSERT statement
-        String insertQuery = "INSERT INTO tAccount (accountNumber, type, ownerid, balance, name)" +
-                " VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO tAccount ( type, ownerid, balance, name)" +
+                " VALUES (?, ?, ?, ?)";
 
         try {
             // Create a prepared statement with the insert query
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 
             // Set parameter values for the insert statement
-            preparedStatement.setInt(1, accountNumber);
-            preparedStatement.setString(2, type);
-            preparedStatement.setInt(3, ownerid);
-            preparedStatement.setDouble(4, balance);
-            preparedStatement.setString(5, name);
+            preparedStatement.setString(1, type);
+            preparedStatement.setInt(2, ownerid);
+            preparedStatement.setDouble(3, balance);
+            preparedStatement.setString(4, name);
 
             // Execute the INSERT statement
             int rowsAffected = preparedStatement.executeUpdate();

@@ -41,7 +41,7 @@ public class transactionTracker {
                 try{
                         if (GlobalVariables.email != null) {
                                 List<Map<String, Object>> response = dbController.executeSQL("SELECT id FROM tUser WHERE uName = '" + GlobalVariables.email + "';");
-
+                                System.out.println(response.size());
                                 String userID = Integer.toString((int)response.get(0).get("id"));
                                 System.out.println(userID);
                                 
@@ -54,7 +54,7 @@ public class transactionTracker {
                                     this.accountID = (Integer) response.get(0).get("ownerid");                                }
                                 else {
                                     System.out.println("no account found, make new account");
-                                    dbController.addAccount(00000000, "default", userIDint, 0, "default");
+                                    dbController.addAccount("default", userIDint, 0, "default");
                                     this.accountID = userIDint;
                                 }
 

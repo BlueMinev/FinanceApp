@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import database.DBController;
 
 
+
 public class loginController implements Initializable {
 
     public TextField emailField;
@@ -134,6 +135,7 @@ public class loginController implements Initializable {
 //        }
 
         try {
+            pWord = Hasher.getHashedValue(pWord);
             dbController.executeSQL("SELECT * FROM tUser WHERE uName = ? AND password = ?");
             return true;
         } catch ( Exception e ) {
