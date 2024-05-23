@@ -69,6 +69,7 @@ public class registerController implements Initializable{
         }  else {
             // add to database
 
+
             // Get the stage from any control (e.g., loginButton)
             Stage stage = (Stage) loginButton.getScene().getWindow();
 

@@ -70,3 +70,6 @@
 .hbox {
     -fx-spacing: 10px; /* Spacing between children */
 }
+.title {
+    -fx-text-fill: #fff;
+}

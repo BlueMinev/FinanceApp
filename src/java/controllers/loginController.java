@@ -68,13 +68,13 @@ public class loginController implements Initializable {
     }
 
     private void onLogin() {
-         
-        if (!(emailField.getText().equals("Admin") )){
-            errorLabel.setText("Account does not exist");}
-        else if (!(passwordField.getText().equals("Admin"))){
-            errorLabel.setText("Password Wrong");
-        }
-         else if  ((emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")) || checkUnamePword(emailField.getText(), passwordField.getText()) == true){
+
+//        if (!(emailField.getText().equals("Admin") )){
+//            errorLabel.setText("Account does not exist");}
+//        else if (!(passwordField.getText().equals("Admin"))){
+//            errorLabel.setText("Password Wrong");
+//        }
+          if  ((emailField.getText().equals("Admin") && passwordField.getText().equals("Admin")) || checkUnamePword(emailField.getText(), passwordField.getText()) == true){
 
             GlobalVariables.email = emailField.getText();
 
@@ -84,53 +84,62 @@ public class loginController implements Initializable {
             // Close the stage
             stage.close();
 
-            try {
-                // Load the FXML file for the dashboard scene
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/dashboardView.fxml"));
-                Parent root = loader.load();
+              try {
+                  // Load the FXML file for the dashboard scene
+                  FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/dashboardView.fxml"));
+                  Parent root = loader.load();
 
-                // Create a new stage for the dashboard scene
-                Stage dashboardStage = new Stage();
-                dashboardStage.setTitle("Dashboard");
+                  // Create a new stage for the dashboard scene
+                  Stage dashboardStage = new Stage();
+                  dashboardStage.setTitle("Dashboard");
 
-                // Set the scene for the dashboard stage
-                Scene dashboardScene = new Scene(root);
-                dashboardStage.setScene(dashboardScene);
+                  // Set the scene for the dashboard stage
+                  Scene dashboardScene = new Scene(root);
+                  dashboardStage.setScene(dashboardScene);
 
-                // Show the dashboard stage
-                dashboardStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Handle the exception, such as showing an error message
-            }
+                  // Show the dashboard stage
+                  dashboardStage.show();
+              } catch (Exception e) {
+                  e.printStackTrace();
+                  // Handle the exception, such as showing an error message
+              }
 
         } else {
             errorLabel.setText("Login Failed");
         }
 
-        
+
     }
 
-    private boolean checkUnamePword(String email, String pWord) {
+    private boolean checkUnamePword(String uName, String pWord) {
         DBController dbController = new DBController();
         Map<String, String> unamesAndPwords = new HashMap<String, String>();
 
+//        try {
+//        List<Map<String,Object>> accounts = dbController.readTable("tUser");
+//
+//        for(Map<String, Object> account : accounts) {
+//            unamesAndPwords.put(account.get("email").toString(), account.get("password").toString());
+//        }
+//
+//        if (unamesAndPwords.containsKey(email) && unamesAndPwords.get(email) == pWord){
+//            return true;
+//        } else {
+//            return false;
+//        }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+
         try {
-        List<Map<String,Object>> accounts = dbController.readTable("tUser");
-
-        for(Map<String, Object> account : accounts) {
-            unamesAndPwords.put(account.get("email").toString(), account.get("password").toString());
-        }
-
-        if (unamesAndPwords.containsKey(email) && unamesAndPwords.get(email) == pWord){
+            dbController.executeSQL("SELECT * FROM tUser WHERE uName = ? AND password = ?");
             return true;
-        } else {
-            return false;
-        }
-
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             e.printStackTrace();
             return false;
         }
+
     }
 }

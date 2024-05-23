@@ -40,14 +40,13 @@ public class transactionTracker {
 
                 try{
                         if (GlobalVariables.email != null) {
-                                List<Map<String, Object>> response = dbController.executeSQL("SELECT * FROM tUser WHERE email = '" + GlobalVariables.email + "';");
+                                List<Map<String, Object>> response = dbController.executeSQL("SELECT id FROM tUser WHERE uName = '" + GlobalVariables.email + "';");
 
                                 String userID = Integer.toString((int)response.get(0).get("id"));
                                 
                                 response = dbController.executeSQL("SELECT * FROM tAccount WHERE ownerid = " + userID + ";");
                                 if (response.size() > 0){
-                                        this.accountID = Integer.parseInt((String)response.get(0).get("ownerid"));
-                                } else{
+                                    this.accountID = (Integer) response.get(0).get("ownerid");                                } else{
                                         System.out.println("no account found");
                                 }
 
