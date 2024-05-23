@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<BorderPane prefHeight="672.8" prefWidth="1112" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FinanceReportController">
+    <top>
+        <Label style="-fx-font-size: 24px; -fx-padding: 10;" text="Finance Report Generator" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <AnchorPane>
+            <children>
+                <VBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
+                    <HBox spacing="10">
+                        <Label style="-fx-font-size: 16px;" text="Timeframe (Months):" />
+                        <TextField fx:id="timeframeField" promptText="Enter months" style="-fx-font-size: 16px;" />
+                    </HBox>
+                    <HBox spacing="10">
+                        <Button onAction="#handleGetIncomes" style="-fx-font-size: 16px;" text="Get Incomes" />
+                        <Button onAction="#handleGetExpenses" style="-fx-font-size: 16px;" text="Get Expenses" />
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label style="-fx-font-size: 16px;" text="Expense Type:" />
+                        <ComboBox fx:id="expenseTypeComboBox" promptText="Select type" style="-fx-font-size: 16px;" />
+                        <Button onAction="#handleGetExpensesByType" style="-fx-font-size: 16px;" text="Get Expenses By Type" />
+                    </HBox>
+                </VBox>
+                <VBox layoutX="572.0" layoutY="22.0" spacing="5">
+                    <Label fx:id="totalIncomeLabel" text="Total Income: £0.00" />
+                    <Label fx:id="totalExpensesLabel" text="Total Expenses: £0.00" />
+                    <Label fx:id="overallTotalLabel" text="Overall Total: £0.00" />
+                </VBox>
+                <VBox layoutX="572.0" layoutY="120.0" spacing="5" />
+                <Line endX="-29.5999755859375" endY="96.59999084472656" layoutX="585.0" layoutY="96.0" startX="-29.5999755859375" startY="-73.80000305175781" />
+                 <Label fx:id="totalByCategoryLabel" layoutX="786.0" layoutY="14.0" text="Total By Category:" />
+                 <VBox fx:id="categoryTotalsContainer" layoutX="786.0" layoutY="44.0" spacing="5" />
+            </children>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <TableView fx:id="reportTable" style="-fx-padding: 10;">
+            <columns>
+                <TableColumn fx:id="dateColumn" prefWidth="100" text="Date" />
+                <TableColumn fx:id="amountColumn" prefWidth="100" text="Amount" />
+                <TableColumn fx:id="typeColumn" prefWidth="100" text="Type" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="200" text="Description" />
+                <TableColumn fx:id="placeColumn" prefWidth="100" text="Place" />
+            </columns>
+        </TableView>
+    </bottom>
+</BorderPane>

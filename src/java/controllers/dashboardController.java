@@ -1,60 +1,64 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+
+import java.io.IOException;
 
 public class dashboardController {
+    @FXML
+    private BorderPane mainBorderPane;
+
+    @FXML
+    public void initialize() {
+        openDashboard(); // Automatically open the dashboard when initialized
+    }
 
     @FXML
     private void openDashboard() {
-        // Code to handle opening the dashboard goes here
-        System.out.println("Opening Dashboard");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
+            Parent homeView = loader.load();
+            mainBorderPane.setCenter(homeView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    private void openBankAccounts() {
-        // Code to handle opening the bank accounts goes here
-        System.out.println("Opening Bank Accounts");
-    }
-
-    @FXML
-    private void openSavings() {
-        // Code to handle opening the savings goes here
-        System.out.println("Opening Savings");
-    }
-
-    @FXML
-    private void openInvestments() {
-        // Code to handle opening the investments goes here
-        System.out.println("Opening Investments");
-    }
 
     @FXML
     private void openExpenseTracker() {
-        // Code to handle opening the expense tracker goes here
-        System.out.println("Opening Expense Tracker");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/financeReportGenerator.fxml"));
+            Parent ReportView = loader.load();
+            mainBorderPane.setCenter(ReportView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void openGoals() {
-        // Code to handle opening the goals goes here
-        System.out.println("Opening Goals");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/transactionHandling.fxml"));
+            Parent TransactionView = loader.load();
+            mainBorderPane.setCenter(TransactionView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void openBudget() {
-        // Code to handle opening the budget goes here
-        System.out.println("Opening Budget");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/BudgetCreator.fxml"));
+            Parent BudgetView = loader.load();
+            mainBorderPane.setCenter(BudgetView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    private void openShopping() {
-        // Code to handle opening the shopping goes here
-        System.out.println("Opening Shopping");
-    }
-
-    @FXML
-    private void openSettings() {
-        // Code to handle opening the settings goes here
-        System.out.println("Opening Settings");
-    }
 }

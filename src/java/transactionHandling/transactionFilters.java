@@ -89,6 +89,11 @@ public class transactionFilters {
         return transaction -> transaction.date().isEqual(date);
     }
 
+    public static Predicate<transactionRecord> hasDateInRange(LocalDate startDate, LocalDate endDate) {
+        return transaction -> (transaction.date().isEqual(startDate) || transaction.date().isAfter(startDate))
+                && (transaction.date().isEqual(endDate) || transaction.date().isBefore(endDate));
+    }
+
     // predicates for transactionID
     public static Predicate<transactionRecord> hasTransactionID(String transactionID) {
         return transaction -> transaction.transactionID().equals(transactionID);

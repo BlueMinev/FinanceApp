@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="672.8" prefWidth="1112.0" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="budgetCreator.BudgetCreatorController">
+
+    <left>
+        <AnchorPane prefHeight="673.0" prefWidth="342.0" BorderPane.alignment="CENTER">
+            <VBox layoutY="145.0" spacing="10">
+                <Label styleClass="header" text="Welcome to the budget creator!" />
+                <GridPane hgap="10" vgap="10">
+                    <children>
+                        <Label text="Home Budget:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="homeBudget" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Bill Budget:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="billBudget" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Shopping Budget:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="shoppingBudget" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Groceries Budget:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="groceriesBudget" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="General Budget:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="generalBudget" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Eatout Budget:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="eatoutBudget" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Transport Budget:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="transportBudget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label text="Entertainment Budget:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField fx:id="entertainmentBudget" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+                <Button onAction="#handleSubmitBudgets" styleClass="submit-button" text="Submit Budgets" />
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+            </VBox>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane BorderPane.alignment="CENTER">
+            <VBox layoutX="-37.0" layoutY="99.0" spacing="10">
+                <Label fx:id="weeksRemainingLabel" styleClass="header" />
+                <HBox spacing="10">
+                    <GridPane hgap="10" vgap="10">
+                        <children>
+                            <!-- Home Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <ProgressBar fx:id="homeBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Home">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="homeBudgetLeft" />
+                                <Label fx:id="homeBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Bill Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <ProgressBar fx:id="billBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Bill">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="billBudgetLeft" />
+                                <Label fx:id="billBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Shopping Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <ProgressBar fx:id="shoppingBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Shopping">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="shoppingBudgetLeft" />
+                                <Label fx:id="shoppingBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Groceries Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                <ProgressBar fx:id="groceriesBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Groceries">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="groceriesBudgetLeft" />
+                                <Label fx:id="groceriesBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- General Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.rowIndex="1">
+                                <ProgressBar fx:id="generalBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="General">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="generalBudgetLeft" />
+                                <Label fx:id="generalBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Eatout Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <ProgressBar fx:id="eatoutBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Eatout">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="eatoutBudgetLeft" />
+                                <Label fx:id="eatoutBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Transport Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <ProgressBar fx:id="transportBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Transport">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="transportBudgetLeft" />
+                                <Label fx:id="transportBudgetLeftPercentage" />
+                            </VBox>
+
+                            <!-- Entertainment Budget -->
+                            <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                <ProgressBar fx:id="entertainmentBudgetBar" prefHeight="20.0" prefWidth="150.0" rotate="270.0">
+                                    <VBox.margin>
+                                        <Insets top="75.0" />
+                                    </VBox.margin>
+                                </ProgressBar>
+                                <Label text="Entertainment">
+                                    <VBox.margin>
+                                        <Insets top="70.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="entertainmentBudgetLeft" />
+                                <Label fx:id="entertainmentBudgetLeftPercentage" />
+                            </VBox>
+                        </children>
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="25" />
+                            <ColumnConstraints percentWidth="25" />
+                            <ColumnConstraints percentWidth="25" />
+                            <ColumnConstraints percentWidth="25" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                    <VBox alignment="CENTER" prefHeight="487.0" prefWidth="124.0" spacing="5">
+                        <ProgressBar fx:id="overallBudgetBar" prefHeight="20.0" prefWidth="285.0" rotate="270.0">
+                     <VBox.margin>
+                        <Insets top="142.5" />
+                     </VBox.margin></ProgressBar>
+                        <Label text="Overall Budget">
+                     <VBox.margin>
+                        <Insets top="75.0" />
+                     </VBox.margin></Label>
+                        <Label fx:id="overallBudgetLeft" />
+                        <Label fx:id="overallBudgetLeftPercentage" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </center>
+</BorderPane>

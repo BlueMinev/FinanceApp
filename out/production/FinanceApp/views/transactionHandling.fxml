@@ -1,52 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="transactionHandling.TransactionController">
-   <top>
-      <HBox alignment="CENTER_LEFT" spacing="10" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="10" left="10" right="10" top="10" />
-         </padding>
-         <Label text="Transaction Type:" />
-         <ComboBox fx:id="transactionTypeComboBox" onAction="#handleTransactionTypeChange" />
-         <Label text="Billing Type:" />
-         <ComboBox fx:id="billingTypeComboBox" onAction="#handleBillingTypeChange" />
-         <Label text="Date:" />
-         <DatePicker fx:id="datePicker" onAction="#handleDateChange" />
-         <Button text="Add Transaction" fx:id="addTransactionButton" onAction="#handleAddTransaction" />
-      </HBox>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.8" prefWidth="1112.0" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="transactionHandling.TransactionController">
 
    <center>
-      <TableView fx:id="transactionTableView">
+      <TableView fx:id="transactionTableView" prefHeight="622.0" prefWidth="813.0">
          <columns>
-            <TableColumn prefWidth="50" text="ID" fx:id="transactionIdColumn"/>
-            <TableColumn prefWidth="100.0" text="Amount" fx:id="amountColumn"/>
-            <TableColumn prefWidth="150.0" text="Transaction Type" fx:id="transactionTypeColumn" />
-            <TableColumn prefWidth="150.0" text="Billing Type" fx:id="billingTypeColumn"/>
-            <TableColumn prefWidth="100.0" text="Date" fx:id="dateColumn"/>
-            <TableColumn prefWidth="150.0" text="Description" fx:id="descriptionColumn"/>
-            <TableColumn prefWidth="150.0" text="Place" fx:id="placeColumn"/>
+            <TableColumn fx:id="transactionIdColumn" prefWidth="25.0" text="ID" />
+            <TableColumn fx:id="amountColumn" prefWidth="100" text="Amount" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="150.0" text="Description" />
+            <TableColumn fx:id="transactionTypeColumn" prefWidth="100.0" text="Category" />
+            <TableColumn fx:id="billingTypeColumn" prefWidth="100.0" text="Billing Type" />
+            <TableColumn fx:id="dateColumn" prefWidth="100.0" text="Date" />
+            <TableColumn fx:id="placeColumn" prefWidth="150.0" text="Place" />
             <TableColumn fx:id="actionColumn" prefWidth="150.0" text="Actions" />
          </columns>
       </TableView>
    </center>
-
+   <right>
+      <VBox alignment="CENTER_LEFT" prefHeight="622.0" prefWidth="213.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Filters:">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label text="Transaction Type:" />
+            <ComboBox fx:id="transactionTypeComboBox" onAction="#handleTransactionTypeChange" prefWidth="100.0" />
+            <Label text="Billing Type:" />
+            <ComboBox fx:id="billingTypeComboBox" onAction="#handleBillingTypeChange" prefWidth="100.0" />
+            <Label text="Date From:" />
+            <DatePicker fx:id="datePickerFrom" onAction="#handleDateChange" />
+            <Label text="Date To:" />
+            <DatePicker fx:id="datePickerTo" onAction="#handleDateChange" />
+            <Button fx:id="resetFiltersButton" onAction="#handleResetFilters" text="Reset Filters" />
+            <Button fx:id="addTransactionButton" onAction="#handleAddTransaction" text="Add Transaction">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets left="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
    <bottom>
-      <HBox alignment="CENTER_RIGHT" spacing="10" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="10" left="10" right="10" top="10" />
-         </padding>
-         <Label text="Total Income:" />
-         <TextField fx:id="totalIncomeField" editable="false" />
-         <Label text="Total Expenses:" />
-         <TextField fx:id="totalExpensesField" editable="false" />
-         <Label text="Balance:" />
-         <TextField fx:id="balanceField" editable="false" />
-      </HBox>
+      <AnchorPane prefHeight="45.0" prefWidth="1112.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="888.0" spacing="10">
+               <padding>
+                  <Insets bottom="10" left="10" right="10" top="10" />
+               </padding>
+               <Label text="Total Income:" />
+               <TextField fx:id="totalIncomeField" editable="false" />
+               <Label text="Total Expenses:" />
+               <TextField fx:id="totalExpensesField" editable="false" />
+               <Label text="Balance:" />
+               <TextField fx:id="balanceField" editable="false" />
+            </HBox>
+         </children>
+      </AnchorPane>
    </bottom>
 </BorderPane>

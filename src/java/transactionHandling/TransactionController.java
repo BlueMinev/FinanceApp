@@ -2,7 +2,10 @@ package transactionHandling;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import controllers.TransactionFormController;
 import controllers.TransactionFormEditController;
@@ -15,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -23,6 +27,9 @@ public class TransactionController {
     @FXML
     public TableColumn<transactionRecord, Void> actionColumn;
     public Button addTransactionButton;
+    public DatePicker datePickerFrom;
+    public DatePicker datePickerTo;
+    public Button resetFiltersButton;
     @FXML
     private TableColumn<transactionRecord, String> transactionIdColumn;
     @FXML
@@ -43,8 +50,6 @@ public class TransactionController {
     private ComboBox<transactionTypes> transactionTypeComboBox;
     @FXML
     private ComboBox<billingTypes> billingTypeComboBox;
-    @FXML
-    private DatePicker datePicker;
     @FXML
     private TextField totalIncomeField;
     @FXML
@@ -162,42 +167,33 @@ public class TransactionController {
         balanceField.setText(Double.toString(tracker.getBalance()));
     }
 
-    @FXML
-    private void handleEditTransaction() {
-        int selectedIndex = transactionTableView.getSelectionModel().getSelectedIndex();
-        if (selectedIndex >= 0 && selectedIndex < transactions.size()) {
-            transactionRecord oldRecord = transactions.get(selectedIndex);
-            if (oldRecord != null) {
-                transactionRecord newRecord = new transactionRecord(
-                        oldRecord.amount(),
-                        oldRecord.transactionType(),
-                        oldRecord.billingType(),
-                        oldRecord.date(),
-                        oldRecord.transactionID(),
-                        oldRecord.description(),
-                        oldRecord.place());
-
-                transactions.set(selectedIndex, newRecord);
-                transactionTableView.getItems().set(selectedIndex, newRecord);
-                transactionTableView.refresh();
-            } else {
-                // Handle the situation when 'oldRecord' is null, maybe showing an error message or logging it.
-            }
-        } else {
-            // Handle the case where 'selectedIndex' is not a valid index for 'transactions',
-            // maybe show an error message or log it.
-        }
-    }
 
     @FXML
     private void handleFilterTransactions() {
-        List<transactionRecord> filteredTransactions = tracker.filterTransactions(
-                filters.hasTransactionType(transactionTypeComboBox.getValue()),
-                filters.hasBillingType(billingTypeComboBox.getValue()),
-                filters.hasDateEqualTo(datePicker.getValue())
-        );
+        List<Predicate<transactionRecord>> predicates = new ArrayList<>();
+
+        transactionTypes selectedTransactionType = transactionTypeComboBox.getValue();
+        if (selectedTransactionType != null) {
+            predicates.add(transactionFilters.hasTransactionType(selectedTransactionType));
+        }
+
+        billingTypes selectedBillingType = billingTypeComboBox.getValue();
+        if (selectedBillingType != null) {
+            predicates.add(transactionFilters.hasBillingType(selectedBillingType));
+        }
+
+        LocalDate selectedDateFrom = datePickerFrom.getValue();
+        LocalDate selectedDateTo = datePickerTo.getValue();
+        if (selectedDateFrom != null && selectedDateTo != null) {
+            predicates.add(transactionFilters.hasDateInRange(selectedDateFrom, selectedDateTo));
+        } else if (selectedDateFrom != null) {
+            predicates.add(transactionFilters.hasDateEqualTo(selectedDateFrom));
+        }
+
+        List<transactionRecord> filteredTransactions = tracker.filterTransactions(predicates.toArray(new Predicate[0]));
         transactions.setAll(filteredTransactions);
     }
+
 
     @FXML
     private void handleTransactionTypeChange() {
@@ -213,6 +209,16 @@ public class TransactionController {
     private void handleDateChange() {
         handleFilterTransactions();
     }
+
+    @FXML
+    private void handleResetFilters() {
+        transactionTypeComboBox.setValue(null);
+        billingTypeComboBox.setValue(null);
+        datePickerFrom.setValue(null);
+        datePickerTo.setValue(null);
+        transactions.setAll(tracker.transactions);
+    }
+
 
     public void addTransaction(transactionRecord record) {
         tracker.addTransaction(record.amount(), record.transactionType(), record.billingType(), record.date(), record.description(), record.place());
@@ -235,6 +241,24 @@ public class TransactionController {
         updateTotalFields();
     }
 
+    public List<transactionRecord> getRecentTransactions() {
+        // Assuming transactions are sorted by date in descending order
+        return transactions.stream().limit(5).collect(Collectors.toList());
+    }
+
+    public double getTotalIncome() {
+        return transactions.stream()
+                .filter(tr -> tr.transactionType() == transactionTypes.INCOME)
+                .mapToDouble(transactionRecord::amount)
+                .sum();
+    }
+
+    public double getTotalExpenses() {
+        return transactions.stream()
+                .filter(tr -> tr.transactionType() != transactionTypes.INCOME)
+                .mapToDouble(transactionRecord::amount)
+                .sum();
+    }
 
 
 }

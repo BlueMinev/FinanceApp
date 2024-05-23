@@ -11,11 +11,10 @@ public class main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Load the FXML file and set up the scene
-        Parent root = FXMLLoader.load(getClass().getResource("/views/transactionHandling.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/dashboardView.fxml"));
         Scene scene = new Scene(root);
 
         //Set up the stage
-        primaryStage.initStyle(StageStyle.UNDECORATED); //Removes default window decorations
         primaryStage.setScene(scene);
 
         // Show the stage

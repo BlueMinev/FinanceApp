@@ -1,11 +1,75 @@
+/* main.css */
+
+/* Main color */
 .main_color {
     -fx-background-color: #18182a;
 }
+
+/* Secondary color */
 .second_color {
     -fx-background-color: #29293c;
 }
+
+/* Menu labels */
 #menu .label {
+    -fx-text-fill: #fff; /* White text color */
+    -fx-font-family: "Times New Roman"; /* Font family */
+    -fx-font-size: 16px; /* Font size */
+}
+
+/* Default label styling */
+.label {
+    -fx-font-size: 16px; /* Font size */
+    -fx-text-fill: #000; /* Black text color */
+}
+
+/* TextFields */
+.text-field {
+    -fx-font-size: 14px; /* Font size */
+    -fx-background-color: #fff; /* White background color */
+}
+
+/* Buttons */
+.button {
+    -fx-font-size: 14px; /* Font size */
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-text-fill: white; /* White text color */
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-font-size: 14px; /* Font size */
+}
+
+/* DatePicker */
+.date-picker {
+    -fx-font-size: 14px; /* Font size */
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #fff; /* White background color */
+}
+
+/* TableView columns */
+.table-column {
+    -fx-alignment: CENTER; /* Center alignment */
+}
+
+/* VBox */
+.vbox {
+    -fx-spacing: 10px; /* Spacing between children */
+}
+
+/* AnchorPane */
+.anchor-pane {
+    -fx-background-color: #fff; /* White background color */
+}
+
+/* HBox */
+.hbox {
+    -fx-spacing: 10px; /* Spacing between children */
+}
+.title {
     -fx-text-fill: #fff;
-    -fx-font-family: "Times New Roman";
-    -fx-font-size: 16px;
 }

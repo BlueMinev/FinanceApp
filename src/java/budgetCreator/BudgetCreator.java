@@ -1,3 +1,5 @@
+package budgetCreator;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.text.DateFormatSymbols;
@@ -23,7 +25,7 @@ class FinanceTracker {
 
 public class BudgetCreator {
     private Map<String, Double> budgetMaximums = new HashMap<>();
-    private int weeksRemainingInMonth;
+    int weeksRemainingInMonth;
     private Map<String, double[]> lastThreeMonthsSpending = new HashMap<>();
 
 
@@ -54,6 +56,10 @@ public class BudgetCreator {
 
     public void addBudgetMaximum(String type, double limit) {
         budgetMaximums.put(type, limit);
+    }
+
+    public double getTotalBudget() {
+        return budgetMaximums.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
     public void fetchAndStorePastThreeMonthsSpending(String category, FinanceTracker financeTracker) {

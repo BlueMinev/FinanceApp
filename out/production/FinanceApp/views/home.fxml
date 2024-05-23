@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="672.8" prefWidth="1112" spacing="20" style="-fx-background-color: #f8f8f8; -fx-padding: 20;" stylesheets="@../styles/main.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="controllers.HomeController">
+    <children>
+        <!-- Title -->
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 10;" text="Financial Dashboard" />
+
+        <!-- GridPane for Financial Summary -->
+        <VBox spacing="10">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Financial Summary" />
+            <GridPane hgap="10" style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #c0c0c0; -fx-border-radius: 5; -fx-background-radius: 5;" vgap="10">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10" />
+                </padding>
+                <Label style="-fx-font-weight: bold;" text="Total Income:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label fx:id="totalIncomeLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label style="-fx-font-weight: bold;" text="Total Expenses:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label fx:id="totalExpensesLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label style="-fx-font-weight: bold;" text="Balance:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="balanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+        </VBox>
+
+        <!-- TableView for Recent Transactions -->
+        <VBox spacing="10">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Recent Transactions" />
+            <TableView fx:id="recentTransactionsTable" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="dateColumn" prefWidth="150" text="Date" />
+                    <TableColumn fx:id="descriptionColumn" prefWidth="600" text="Description" />
+                    <TableColumn fx:id="amountColumn" prefWidth="150" text="Amount" />
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Progress Bar for Overall Budget -->
+        <!--   <HBox spacing="10" alignment="CENTER" style="-fx-background-color: #e0e0e0; -fx-padding: 10; -fx-border-color: #c0c0c0; -fx-border-radius: 5; -fx-background-radius: 5;">
+               <children>
+                   <ProgressBar fx:id="overallBudgetBar" prefWidth="200"/>
+                   <Label fx:id="overallBudgetPercentage" text="Overall Budget Left" style="-fx-font-size: 14px;"/>
+               </children>
+           </HBox>     -->
+    </children>
+</VBox>

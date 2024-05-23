@@ -4,26 +4,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="281.6" prefWidth="215.2" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TransactionFormController">
+<AnchorPane prefHeight="281.6" prefWidth="215.2" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TransactionFormController">
    <children>
-       <VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml">
+       <VBox alignment="CENTER" spacing="5.0" xmlns:fx="http://javafx.com/fxml">
+         <Label text="Amount:" />
            <TextField fx:id="amountField" promptText="Enter Amount" />
+         <Label text="Transaction Type:" />
 
            <ComboBox fx:id="transactionTypeField" promptText="Select Transaction Type">
                <!-- Enum values can be added via the controller or directly if they are known -->
            </ComboBox>
+         <Label text="Billng Type" />
 
            <ComboBox fx:id="billingTypeField" promptText="Select Billing Type">
                <!-- Enum values can be added via the controller or directly if they are known -->
            </ComboBox>
+         <Label text="Date:" />
 
            <DatePicker fx:id="dateField" promptText="Select Date" />
+         <Label text="Description:" />
 
            <TextField fx:id="descriptionField" promptText="Enter Description" />
+         <Label text="Place:" />
 
            <TextField fx:id="placeField" promptText="Enter Place" />
 
