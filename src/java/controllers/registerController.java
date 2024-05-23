@@ -1,4 +1,5 @@
 package controllers;
+import database.DBController;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -22,11 +23,14 @@ public class registerController implements Initializable{
     public PasswordField passwordField1;
     public PasswordField passwordField2;
     public Button loginButton;
+    public Label errorLabel;
+    private DBController dbController;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginButton.setOnAction(actionEvent -> onRegister());
-
+        dbController = new DBController();
     }
     private boolean isValidEmail(String email){
         String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -35,39 +39,42 @@ public class registerController implements Initializable{
         return matcher.matches();
 
     }
+    private void addUserToDB() {
+        String fName = fNameField.getText();
+        String lName = lNameField.getText();
+        String Email = emailField.getText();
+        String uName = uNameField.getText();
+        String password = passwordField1.getText();
+
+        dbController.addUser(fName, lName, Email, uName, password);
+
+    }
 
     private void onRegister(){
         if (fNameField.getText().equals("")){
-            System.out.println("Please put enter Your First Name");
-            // errorLabel.setText("Please put enter Your First Name");
+             errorLabel.setText("Please enter Your First Name");
         } else if (lNameField.getText().equals("")){
-            System.out.println("Please put enter Your Last Name");
-            // errorLabel.setText("Please put enter Your Last Name");
+             errorLabel.setText("Please enter Your Last Name");
         } else if (!(isValidEmail(emailField.getText()))){
-            System.out.println("This is not a valid email");
-            // errorLabel.setText("This is not a valid email");
+             errorLabel.setText("This is not a valid email");
         }
         //else if (email is already in database){
             // errorLabel.setText("An account already exists with this email please log in");
         //}
         else if (uNameField.getText().equals("")){
-            System.out.println("Please put enter a Username");
-            // errorLabel.setText("Please put enter a Username");
+             errorLabel.setText("Please enter a Username");
         }
         //else if (username exists in database){
             // errorLabel.setText("An account already exists with this username please choose another");
         //}
         else if (passwordField1.getText().equals("")){
-            System.out.println("Please put enter a password1");
-            // errorLabel.setText("Please put enter a password");
+            errorLabel.setText("Please enter a password");
         } else if (passwordField2.getText().equals("")){
-            System.out.println("Please put enter a password2");
-            // errorLabel.setText("Please put enter a password");
+             errorLabel.setText("Please re-enter a password");
         } else if (!(passwordField1.getText().equals(passwordField2.getText()))){
-            System.out.println("The passwords are not the same");
-            // errorLabel.setText("The passwords are not the same");
+             errorLabel.setText("The passwords are not the same");
         }  else {
-            // add to database
+            addUserToDB();
 
 
             // Get the stage from any control (e.g., loginButton)
@@ -78,7 +85,7 @@ public class registerController implements Initializable{
 
             try {
                 // Load the FXML file for the dashboard scene
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/dashboardView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/loginView.fxml"));
                 Parent root = loader.load();
 
                 // Create a new stage for the dashboard scene

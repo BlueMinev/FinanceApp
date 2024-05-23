@@ -43,12 +43,21 @@ public class transactionTracker {
                                 List<Map<String, Object>> response = dbController.executeSQL("SELECT id FROM tUser WHERE uName = '" + GlobalVariables.email + "';");
 
                                 String userID = Integer.toString((int)response.get(0).get("id"));
+                                System.out.println(userID);
                                 
                                 response = dbController.executeSQL("SELECT * FROM tAccount WHERE ownerid = " + userID + ";");
-                                if (response.size() > 0){
-                                    this.accountID = (Integer) response.get(0).get("ownerid");                                } else{
-                                        System.out.println("no account found");
+                                System.out.println("tAccount: " + response);
+
+                                int userIDint = Integer.parseInt(userID);
+
+                            if (response.size() > 0){
+                                    this.accountID = (Integer) response.get(0).get("ownerid");                                }
+                                else {
+                                    System.out.println("no account found, make new account");
+                                    dbController.addAccount(00000000, "default", userIDint, 0, "default");
+                                    this.accountID = userIDint;
                                 }
+
 
                                 GlobalVariables.accountID = Integer.toString(accountID);
                         } else{
@@ -62,7 +71,7 @@ public class transactionTracker {
                         e.printStackTrace();
                 }
 
-                this.readPaymentTable();
+                this.readPaymentTable(accountID);
         }
 
         // kinda just for testing atm lol
@@ -82,10 +91,11 @@ public class transactionTracker {
         * @throws SQLException if there is an error executing the SQL query
         */
        @SuppressWarnings("unchecked")
-        private void readPaymentTable(){
+        private void readPaymentTable(int accountID){
                 try{
                         // Read the payment table from the database
                         List<Map<String, Object>> trnsctns = dbController.executeSQL("SELECT * FROM tPayment WHERE accountNumber = '" + accountID +"';");
+                        System.out.println("trnsctns: " + trnsctns);
 
                         // Loop through each transaction in the table
                         for(Map<String, Object> trnsctn : trnsctns){

@@ -93,7 +93,7 @@ public class DBController {
      * @param uName Username.
      * @param password User's password.
      */
-    private void addUser(String fName, String lName, String email, String uName, String password) {
+    public void addUser(String fName, String lName, String email, String uName, String password) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
         // Request a connection to the database
@@ -294,7 +294,7 @@ public class DBController {
      * @param name The name or description of the account.
      */
     //TODO: add more constraint(accountNumber set amount of numbers)
-    private void addAccount(int accountNumber, String type, int ownerid, double balance, String name) {
+    public void addAccount(int accountNumber, String type, int ownerid, double balance, String name) {
         // Obtain an instance of DBConnection
         DBConnection controller = DBConnection.getInstance();
         // Request a connection to the database
